@@ -1,14 +1,16 @@
 import pygame
 import sys
+from .level import Level
+from .settings import *
 
-SCREEN_WIDTH = 1280
-SCREEN_HEIGHT = 720
 
 class Game:
     def __init__(self) -> None:
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        pygame.display.set_caption('Estar do Vale')
         self.clock = pygame.time.Clock()
+        self.level = Level()
 
     def run(self) -> None:
         while True:
@@ -17,6 +19,8 @@ class Game:
                     pygame.quit()
                     sys.exit
             
+            dt = self.clock.tick() / 1000
+            self.level.run(dt)
             pygame.display.update()
             
 
