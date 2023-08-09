@@ -1,79 +1,67 @@
 import pygame
-import os
+from pygame.math import Vector2
+from .support import *
 from .settings import *
 from .colors import *
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-
-        # dimentions
-        self.width = 50
-        self.height = 50
-
-        # position
-        self.x = SCREEN_WIDTH / 2
-        self.y = SCREEN_HEIGHT / 2
-
-        self.speed = 2
+    def __init__(self, pos, group):
+        super().__init__(group)
 
         # Initialize animations
         self.animations = {'up': [], 'down': [], 'left': [], 'right': [], 'down_idle': []}
         self.import_assets()
-        self.current_animation = self.animations['down_idle']
+        self.status = 'down_idle'
         self.animation_index = 0
 
-    # TODO: send this to another file
-    def import_folder(self, path):
-        sprite_list = []
-        print(os.walk(path))
-        for folder_name, sub_folder, contents in os.walk(path):
-            print(folder_name)
-            for content in contents:
-                full_path = path + '/' + content
-                content_surf = pygame.image.load(full_path).convert_alpha()
-                sprite_list.append(content_surf)
-        return sprite_list
+        # general setup
+        self.image = self.animations[self.status][self.animation_index]
+        self.rect = self.image.get_rect(center = pos)
+
+        # movement setup
+        self.direction = pygame.math.Vector2()
+        self.pos = pygame.math.Vector2(self.rect.center)
+        self.speed = 200
     
     def import_assets(self):
         for key in self.animations.keys():
             full_path = 'graphics/character/' + key
-            print(full_path)
-            self.animations[key] = self.import_folder(full_path)
+            self.animations[key] = import_folder(full_path)
 
-    def animate(self):
-        self.image = self.current_animation[self.animation_index // (180//len(self.current_animation)) % len(self.current_animation)]
-        self.animation_index += 1
-
-    def draw(self, surface):
-        rect = self.image.get_rect()
-        width = rect.width
-        height = rect.height
-        surface.blit(self.image, (self.x - width/2, self.y - height/2))
-
-    def move(self, keys):
-        self.current_animation = self.animations['down_idle']
+    def input(self):
+        keys = pygame.key.get_pressed()
+        self.status = 'down_idle'
+        self.direction.y = 0
+        self.direction.x = 0
 
         if keys[pygame.K_LEFT]:
-            self.current_animation = self.animations['left']
-            self.x -= self.speed
+            self.status = 'left'
+            self.direction.x = -1
         if keys[pygame.K_RIGHT]:
-            self.current_animation = self.animations['right']
-            self.x += self.speed
+            self.status = 'right'
+            self.direction.x = 1
         if keys[pygame.K_UP]:
-            self.current_animation = self.animations['up']
-            self.y -= self.speed
+            self.status = 'up'
+            self.direction.y = -1
         if keys[pygame.K_DOWN]:
-            self.current_animation = self.animations['down']
-            self.y += self.speed
+            self.status = 'down'
+            self.direction.y = 1
 
-        
-        # Boundary checking
-        if self.x < 0:
-            self.x = 0
-        if self.x > SCREEN_WIDTH - self.width:
-            self.x = SCREEN_WIDTH - self.width
-        if self.y < 0:
-            self.y = 0
-        if self.y > SCREEN_HEIGHT - self.height:
-            self.y = SCREEN_HEIGHT - self.height
+    def move(self, dt):
+        # normalize vector
+        if self.direction.magnitude() > 0: # checks if vector is not zero
+            self.direction = self.direction.normalize()
+        # TODO: implement collision mechanics
+        self.pos += self.direction * self.speed * dt
+        self.rect.center = self.pos
+
+    def animate(self, dt):
+        self.animation_index += 4 * dt # can return float
+        if self.animation_index >= len(self.animations[self.status]):
+            self.animation_index = 0
+        self.image = self.animations[self.status][int(self.animation_index)]
+
+    def update(self, dt):
+        self.input()
+        self.move(dt)
+        self.animate(dt)
