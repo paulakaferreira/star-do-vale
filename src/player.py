@@ -13,6 +13,7 @@ class Player(pygame.sprite.Sprite):
         self.import_assets()
         self.status = 'down_idle'
         self.animation_index = 0
+        self.animation_speed = 4  # cycle through 4 sprites each second
 
         # general setup
         self.image = self.animations[self.status][self.animation_index]
@@ -56,7 +57,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.center = self.pos
 
     def animate(self, dt):
-        self.animation_index += 4 * dt # can return float
+        self.animation_index += self.animation_speed * dt # can return float
         if self.animation_index >= len(self.animations[self.status]):
             self.animation_index = 0
         self.image = self.animations[self.status][int(self.animation_index)]
