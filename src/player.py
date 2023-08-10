@@ -1,7 +1,7 @@
 import pygame
 from pygame.math import Vector2
 from .support import *
-from .settings import *
+from . import settings
 from .colors import *
 
 class Player(pygame.sprite.Sprite):
@@ -22,6 +22,7 @@ class Player(pygame.sprite.Sprite):
         # movement setup
         self.direction = pygame.math.Vector2()
         self.pos = pygame.math.Vector2(self.rect.center)
+        print(self.pos)
         self.speed = 200
     
     def import_assets(self):
@@ -48,13 +49,22 @@ class Player(pygame.sprite.Sprite):
             self.status = 'down'
             self.direction.y = 1
 
+
     def move(self, dt):
         # normalize vector
         if self.direction.magnitude() > 0: # checks if vector is not zero
             self.direction = self.direction.normalize()
-        # TODO: implement collision mechanics
-        self.pos += self.direction * self.speed * dt
+        
+        new_pos = self.pos + self.direction * self.speed * dt
+
+        if new_pos.x <= settings.SCREEN_WIDTH and new_pos.x >= 0:
+            self.pos.x = new_pos.x
+            
+        if new_pos.y <= settings.SCREEN_HEIGHT and new_pos.y >= 0:
+            self.pos.y = new_pos.y
+        
         self.rect.center = self.pos
+
 
     def animate(self, dt):
         self.animation_index += self.animation_speed * dt # can return float
