@@ -1,5 +1,6 @@
 import pygame
 from .player import Player
+from . import settings
 from . import colors
 
 
@@ -10,7 +11,7 @@ class Level:
         self.setup()
 
     def setup(self):
-        self.player = Player((640, 360), self.all_sprites)
+        self.player = Player((settings.SCREEN_WIDTH // 2, settings.SCREEN_HEIGHT // 2), self.all_sprites)
 
     def run(self, dt):
         self.display_surface.fill(colors.PASTEL_GREEN)
