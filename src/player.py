@@ -4,6 +4,7 @@ from .support import *
 from . import settings
 from .colors import *
 
+
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, group):
         super().__init__(group)
@@ -22,7 +23,6 @@ class Player(pygame.sprite.Sprite):
         # movement setup
         self.direction = pygame.math.Vector2()
         self.pos = pygame.math.Vector2(self.rect.center)
-        print(self.pos)
         self.speed = 200
     
     def import_assets(self):
@@ -49,22 +49,33 @@ class Player(pygame.sprite.Sprite):
             self.status = 'down'
             self.direction.y = 1
 
+    @staticmethod
+    def manhattan(pos, collision_objects):
+        for obj in collision_objects:
+            if abs(pos.y - obj.pos.y) < 32 and abs(pos.x - obj.pos.x) < 32:
+                return True
+        return False
+            
+    def check_horizontal_move(self, pos, collision_objects):
+        return not(self.manhattan(pos, collision_objects)) and pos.x <= settings.SCREEN_WIDTH and pos.x >= 0
 
-    def move(self, dt):
+    def check_vertical_move(self, pos, collision_objects):
+        return not(self.manhattan(pos, collision_objects)) and pos.y <= settings.SCREEN_HEIGHT and pos.y >= 0
+
+    def move(self, dt, collision_objects = []):
         # normalize vector
         if self.direction.magnitude() > 0: # checks if vector is not zero
             self.direction = self.direction.normalize()
         
         new_pos = self.pos + self.direction * self.speed * dt
 
-        if new_pos.x <= settings.SCREEN_WIDTH and new_pos.x >= 0:
+        if self.check_horizontal_move(new_pos, collision_objects):
             self.pos.x = new_pos.x
             
-        if new_pos.y <= settings.SCREEN_HEIGHT and new_pos.y >= 0:
+        if self.check_vertical_move(new_pos, collision_objects):
             self.pos.y = new_pos.y
-        
+    
         self.rect.center = self.pos
-
 
     def animate(self, dt):
         self.animation_index += self.animation_speed * dt # can return float
@@ -74,5 +85,5 @@ class Player(pygame.sprite.Sprite):
 
     def update(self, dt):
         self.input()
-        self.move(dt)
+        self.move(dt, self.collision_objects)
         self.animate(dt)

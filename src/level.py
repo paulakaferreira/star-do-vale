@@ -1,5 +1,6 @@
 import pygame
 from .player import Player
+from .objects import CollisionObject
 from . import settings
 from . import colors
 
@@ -12,8 +13,11 @@ class Level:
 
     def setup(self):
         self.player = Player((settings.SCREEN_WIDTH // 2, settings.SCREEN_HEIGHT // 2), self.all_sprites)
+        self.stump = CollisionObject(self.all_sprites)
 
     def run(self, dt):
         self.display_surface.fill(colors.PASTEL_GREEN)
-        self.all_sprites.draw(self.display_surface)
+        self.player.collision_objects = [self.stump]
         self.all_sprites.update(dt)
+        self.all_sprites.draw(self.display_surface)
+        

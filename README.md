@@ -1,4 +1,4 @@
-# Estar do Vale
+# Star do Vale
 
 An indie farming simulation role-playing game.
 
