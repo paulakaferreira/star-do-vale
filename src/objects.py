@@ -22,7 +22,7 @@ class Obstacle(pygame.sprite.Sprite):
 
     def get_hitbox(self):
         hitbox = self.rect.copy()
-        hitbox.width /= 2
-        hitbox.height /= 2
+        hitbox.width /= 1
+        hitbox.height /= 1
         hitbox.center = self.rect.center
         return hitbox
