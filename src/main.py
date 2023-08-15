@@ -11,15 +11,18 @@ class Game:
         pygame.display.set_caption('Estar do Vale')
         self.clock = pygame.time.Clock()
         self.level = Level()
+        self.running = True
 
     def run(self) -> None:
-        while True:
+        while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit
-            
-            dt = self.clock.tick() / 1000
+                    self.running = False
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        self.running = False
+
+            dt = self.clock.tick(60) / 1000
             self.level.run(dt)
             pygame.display.update()
             
