@@ -25,7 +25,9 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2()
         self.pos = pygame.math.Vector2(self.rect.center)
         self.speed = 200
+        self.hitbox_vertical_offset = 20
         self.level = None
+        
 
     def update(self, dt):
         self.input()
@@ -35,7 +37,7 @@ class Player(pygame.sprite.Sprite):
     def get_hitbox(self):
         hitbox = self.rect.copy()
         hitbox.width /= 5
-        hitbox.height /= 4
+        hitbox.height /= 10
         hitbox.center = self.rect.center
         return hitbox
 
@@ -72,20 +74,18 @@ class Player(pygame.sprite.Sprite):
         if self.direction.magnitude() > 0:  # checks if vector is not zero
             self.direction = self.direction.normalize()
 
-        new_pos = self.pos + self.direction * self.speed * dt
-
-        return new_pos
+        return self.pos + self.direction * self.speed * dt
 
     def predict_horizontal_hitbox(self, new_pos):
         """Predict horizontal movement."""
         hitbox = self.get_hitbox()
-        hitbox.center = (new_pos.x, self.pos.y)
+        hitbox.center = (new_pos.x, self.pos.y + self.hitbox_vertical_offset)
         return hitbox
 
     def predict_vertical_hitbox(self, new_pos):
         """Predict vertical movement."""
         hitbox = self.get_hitbox()
-        hitbox.center = (self.pos.x, new_pos.y)
+        hitbox.center = (self.pos.x, new_pos.y + self.hitbox_vertical_offset)
         return hitbox
 
     def check_horizontal_move(self, pos):
