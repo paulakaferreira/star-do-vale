@@ -10,7 +10,8 @@ class Player(pygame.sprite.Sprite):
         super().__init__(group)
 
         # Initialize animations
-        self.animations = {'up': [], 'down': [], 'left': [], 'right': [], 'down_idle': []}
+        self.animations = {'up': [], 'down': [],
+                           'left': [], 'right': [], 'down_idle': []}
         self.import_assets()
         self.status = 'down_idle'
         self.animation_index = 0
@@ -18,13 +19,29 @@ class Player(pygame.sprite.Sprite):
 
         # general setup
         self.image = self.animations[self.status][self.animation_index]
-        self.rect = self.image.get_rect(center = pos)
+        self.rect = self.image.get_rect(center=pos)
 
         # movement setup
         self.direction = pygame.math.Vector2()
         self.pos = pygame.math.Vector2(self.rect.center)
         self.speed = 200
-    
+        self.level = None
+
+    def update(self, dt):
+        self.input()
+        self.move(dt)
+        self.animate(dt)
+
+    def get_hitbox(self):
+        hitbox = self.rect.copy()
+        hitbox.width /= 2
+        hitbox.height /= 2
+        hitbox.center = self.rect.center
+        return hitbox
+
+    def enter_level(self, level):
+        self.level = level
+
     def import_assets(self):
         for key in self.animations.keys():
             full_path = 'graphics/character/' + key
@@ -49,41 +66,68 @@ class Player(pygame.sprite.Sprite):
             self.status = 'down'
             self.direction.y = 1
 
-    @staticmethod
-    def manhattan(pos, collision_objects):
-        for obj in collision_objects:
-            if abs(pos.y - obj.pos.y) < 32 and abs(pos.x - obj.pos.x) < 32:
-                return True
-        return False
-            
-    def check_horizontal_move(self, pos, collision_objects):
-        return not(self.manhattan(pos, collision_objects)) and pos.x <= settings.SCREEN_WIDTH and pos.x >= 0
+    def predict_position(self, dt):
+        """Predict the next position without actually moving the player."""
+        hitbox = self.rect.copy()
 
-    def check_vertical_move(self, pos, collision_objects):
-        return not(self.manhattan(pos, collision_objects)) and pos.y <= settings.SCREEN_HEIGHT and pos.y >= 0
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            self.direction.x = -1
+        if keys[pygame.K_RIGHT]:
+            self.direction.x = 1
+        if keys[pygame.K_UP]:
+            self.direction.y = -1
+        if keys[pygame.K_DOWN]:
+            self.direction.y = 1
 
-    def move(self, dt, collision_objects = []):
-        # normalize vector
-        if self.direction.magnitude() > 0: # checks if vector is not zero
-            self.direction = self.direction.normalize()
-        
         new_pos = self.pos + self.direction * self.speed * dt
 
-        if self.check_horizontal_move(new_pos, collision_objects):
+        return new_pos
+
+    def predict_horizontal_hitbox(self, new_pos):
+        """Predict horizontal movement."""
+        hitbox = self.get_hitbox()
+        hitbox.center = (new_pos.x, self.pos.y)
+        return hitbox
+
+    def predict_vertical_hitbox(self, new_pos):
+        """Predict vertical movement."""
+        hitbox = self.get_hitbox()
+        hitbox.center = (self.pos.x, new_pos.y)
+        return hitbox
+
+    def check_horizontal_move(self, pos):
+        return pos.x <= settings.SCREEN_WIDTH and pos.x >= 0
+
+    def check_vertical_move(self, pos):
+        return pos.y <= settings.SCREEN_HEIGHT and pos.y >= 0
+
+    def move(self, dt):
+        # normalize vector
+        if self.direction.magnitude() > 0:  # checks if vector is not zero
+            self.direction = self.direction.normalize()
+
+        new_pos = self.predict_position(dt)
+
+        future_horizontal_position = self.predict_horizontal_hitbox(new_pos)
+        future_vertical_position = self.predict_vertical_hitbox(new_pos)
+
+        horizontal_collisions = [
+            obstacle for obstacle in self.level.obstacles if future_horizontal_position.colliderect(obstacle.hitbox)]
+
+        vertical_collisions = [
+            obstacle for obstacle in self.level.obstacles if future_vertical_position.colliderect(obstacle.hitbox)]
+
+        if self.check_horizontal_move(new_pos) and len(horizontal_collisions) == 0:
             self.pos.x = new_pos.x
-            
-        if self.check_vertical_move(new_pos, collision_objects):
+
+        if self.check_vertical_move(new_pos) and len(vertical_collisions) == 0:
             self.pos.y = new_pos.y
-    
+
         self.rect.center = self.pos
 
     def animate(self, dt):
-        self.animation_index += self.animation_speed * dt # can return float
+        self.animation_index += self.animation_speed * dt  # can return float
         if self.animation_index >= len(self.animations[self.status]):
             self.animation_index = 0
         self.image = self.animations[self.status][int(self.animation_index)]
-
-    def update(self, dt):
-        self.input()
-        self.move(dt, self.collision_objects)
-        self.animate(dt)
