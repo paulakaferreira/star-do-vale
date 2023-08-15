@@ -2,6 +2,7 @@ import pygame
 import sys
 from .level import Level
 from .settings import *
+from . import colors
 
 from pygame.locals import *
 
@@ -11,8 +12,6 @@ class Game:
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), HWSURFACE|DOUBLEBUF|RESIZABLE)
         self.fake_screen = self.screen.copy()
-        self.pic = pygame.surface.Surface((50, 50))
-        self.pic.fill((255, 100, 200))
 
         pygame.display.set_caption('Estar do Vale')
         self.clock = pygame.time.Clock()
@@ -30,8 +29,7 @@ class Game:
                 if event.type == VIDEORESIZE:
                     self.screen = pygame.display.set_mode(event.size, HWSURFACE|DOUBLEBUF|RESIZABLE)
 
-            self.fake_screen.fill('black')
-            self.fake_screen.blit(self.pic, (100, 100))
+            self.fake_screen.fill(colors.PASTEL_GREEN)
             dt = self.clock.tick(60) / 1000
             self.level.run(dt)
             self.level.all_sprites.draw(self.fake_screen)
