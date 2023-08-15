@@ -3,11 +3,17 @@ import sys
 from .level import Level
 from .settings import *
 
+from pygame.locals import *
+
 
 class Game:
     def __init__(self) -> None:
         pygame.init()
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), HWSURFACE|DOUBLEBUF|RESIZABLE)
+        self.fake_screen = self.screen.copy()
+        self.pic = pygame.surface.Surface((50, 50))
+        self.pic.fill((255, 100, 200))
+
         pygame.display.set_caption('Estar do Vale')
         self.clock = pygame.time.Clock()
         self.level = Level()
@@ -21,9 +27,15 @@ class Game:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.running = False
+                if event.type == VIDEORESIZE:
+                    self.screen = pygame.display.set_mode(event.size, HWSURFACE|DOUBLEBUF|RESIZABLE)
 
+            self.fake_screen.fill('black')
+            self.fake_screen.blit(self.pic, (100, 100))
             dt = self.clock.tick(60) / 1000
             self.level.run(dt)
+            self.level.all_sprites.draw(self.fake_screen)
+            self.screen.blit(pygame.transform.scale(self.fake_screen, self.screen.get_rect().size), (0,0))
             pygame.display.update()
             
 

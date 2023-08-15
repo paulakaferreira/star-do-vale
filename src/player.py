@@ -68,17 +68,9 @@ class Player(pygame.sprite.Sprite):
 
     def predict_position(self, dt):
         """Predict the next position without actually moving the player."""
-        hitbox = self.rect.copy()
-
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
-            self.direction.x = -1
-        if keys[pygame.K_RIGHT]:
-            self.direction.x = 1
-        if keys[pygame.K_UP]:
-            self.direction.y = -1
-        if keys[pygame.K_DOWN]:
-            self.direction.y = 1
+        # normalize vector
+        if self.direction.magnitude() > 0:  # checks if vector is not zero
+            self.direction = self.direction.normalize()
 
         new_pos = self.pos + self.direction * self.speed * dt
 
@@ -103,10 +95,6 @@ class Player(pygame.sprite.Sprite):
         return pos.y <= settings.SCREEN_HEIGHT and pos.y >= 0
 
     def move(self, dt):
-        # normalize vector
-        if self.direction.magnitude() > 0:  # checks if vector is not zero
-            self.direction = self.direction.normalize()
-
         new_pos = self.predict_position(dt)
 
         future_horizontal_position = self.predict_horizontal_hitbox(new_pos)
