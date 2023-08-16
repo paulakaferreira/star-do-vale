@@ -2,6 +2,7 @@ import pygame
 import sys
 from .level import Level
 from .settings import *
+from .support import *
 from . import colors
 
 from pygame.locals import *
@@ -28,9 +29,10 @@ class Game:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.running = False
-                if event.type == VIDEORESIZE:
+                if event.type == pygame.VIDEORESIZE:
+                    window_size = handle_resize_event(event)
                     self.screen = pygame.display.set_mode(
-                        event.size, HWSURFACE | DOUBLEBUF | RESIZABLE
+                        window_size, HWSURFACE | DOUBLEBUF | RESIZABLE
                     )
 
             self.fake_screen.fill(colors.PASTEL_GREEN)
