@@ -21,4 +21,4 @@ class Level:
     def run(self, dt):
         self.display_surface.fill(colors.PASTEL_GREEN)
         self.all_sprites.update(dt)
-        self.all_sprites.draw(self.display_surface)
+
