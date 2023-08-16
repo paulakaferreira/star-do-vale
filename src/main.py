@@ -39,13 +39,9 @@ class Game:
             dt = self.clock.tick(60) / 1000
             self.level.run(dt)
 
-            sorted_sprites = pygame.sprite.Group()
-            for sprite in sorted(
-                self.level.all_sprites.sprites(), key=lambda sprite: sprite.pos.y
-            ):
-                sorted_sprites.add(sprite)
-
+            sorted_sprites = handle_sprite_position(self)
             sorted_sprites.draw(self.fake_screen)
+
             self.screen.blit(
                 pygame.transform.scale(self.fake_screen, self.screen.get_rect().size),
                 (0, 0),

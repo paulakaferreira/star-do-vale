@@ -29,3 +29,12 @@ def handle_resize_event(event):
     new_size = (new_width, new_height)
 
     return new_size
+
+
+def handle_sprite_position(self):
+    sorted_sprites = pygame.sprite.Group()
+    for sprite in sorted(
+        self.level.all_sprites.sprites(), key=lambda sprite: sprite.pos.y
+    ):
+        sorted_sprites.add(sprite)
+    return sorted_sprites
