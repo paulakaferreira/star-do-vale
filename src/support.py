@@ -1,5 +1,6 @@
 import pygame
 import os
+from .settings import *
 
 def import_folder(path):
     sprite_list = []
