@@ -18,8 +18,9 @@ jobs:
       run: |
         curl -sSL https://install.python-poetry.org | python -
         poetry install --with dev
-    - name: Analysing the code with pylint
+    - name: Analysing the code with Flake8
       run: |
-        poetry shell
-        black --check .
-        pflake8 .
+        poetry run pflake8 .
+    - name: Analysing the code with Black
+      run: |
+        poetry run black --check .
