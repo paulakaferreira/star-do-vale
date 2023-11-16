@@ -2,6 +2,7 @@ import pygame
 import sys
 from .level import Level
 from .settings import *
+from .support import *
 from . import colors
 
 from pygame.locals import *
@@ -28,22 +29,19 @@ class Game:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.running = False
-                if event.type == VIDEORESIZE:
+                if event.type == pygame.VIDEORESIZE:
+                    window_size = handle_resize_event(event)
                     self.screen = pygame.display.set_mode(
-                        event.size, HWSURFACE | DOUBLEBUF | RESIZABLE
+                        window_size, HWSURFACE | DOUBLEBUF | RESIZABLE
                     )
 
             self.fake_screen.fill(colors.PASTEL_GREEN)
             dt = self.clock.tick(60) / 1000
             self.level.run(dt)
 
-            sorted_sprites = pygame.sprite.Group()
-            for sprite in sorted(
-                self.level.all_sprites.sprites(), key=lambda sprite: sprite.pos.y
-            ):
-                sorted_sprites.add(sprite)
-
+            sorted_sprites = handle_sprite_position(self)
             sorted_sprites.draw(self.fake_screen)
+
             self.screen.blit(
                 pygame.transform.scale(self.fake_screen, self.screen.get_rect().size),
                 (0, 0),

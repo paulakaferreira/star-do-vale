@@ -89,10 +89,10 @@ class Player(pygame.sprite.Sprite):
         return hitbox
 
     def check_horizontal_move(self, pos):
-        return pos.x <= settings.SCREEN_WIDTH and pos.x >= 0
+        return pos.x <= (settings.SCREEN_WIDTH - 30) and (pos.x >= 30)
 
     def check_vertical_move(self, pos):
-        return pos.y <= settings.SCREEN_HEIGHT and pos.y >= 0
+        return pos.y <= (settings.SCREEN_HEIGHT - 40) and (pos.y >= 30)
 
     def move(self, dt):
         new_pos = self.predict_position(dt)
