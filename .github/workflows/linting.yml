@@ -18,9 +18,14 @@ jobs:
       run: |
         curl -sSL https://install.python-poetry.org | python -
         poetry install --with dev
-    - name: Analysing the code with Flake8
+    - name: Analysing the code with Ruff
       run: |
-        poetry run pflake8 .
-    - name: Analysing the code with Black
+        ruff check . --output-format=junit > flake8.xml
+        ruff format . --check
+    - name: Analysing the code with Mypy
       run: |
-        poetry run black --check .
+        mypy --version
+        mypy --strict .
+    - name: Analysing the code with Pytest
+      run: |
+        pytest
