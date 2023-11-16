@@ -1,7 +1,8 @@
 import pygame
 from pygame.locals import DOUBLEBUF, HWSURFACE, RESIZABLE
 
-from . import colors
+from src import colors
+
 from .level import Level
 from .settings import SCREEN_HEIGHT, SCREEN_WIDTH
 from .support import handle_resize_event, handle_sprite_position
