@@ -20,12 +20,12 @@ jobs:
         poetry install --with dev
     - name: Analysing the code with Ruff
       run: |
-        ruff check . --output-format=junit > flake8.xml
-        ruff format . --check
+        poetry run ruff check .
+        poetry run ruff format . --check
     - name: Analysing the code with Mypy
       run: |
-        mypy --version
-        mypy --strict .
+        poetry run mypy --version
+        poetry run mypy --strict .
     - name: Analysing the code with Pytest
       run: |
-        pytest
+        poetry run pytest
