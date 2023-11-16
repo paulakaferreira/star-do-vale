@@ -1,8 +1,8 @@
 import pygame
-from .player import Player
+
+from . import colors, settings
 from .objects import Obstacle
-from . import settings
-from . import colors
+from .player import Player
 
 
 class Level:
@@ -12,8 +12,7 @@ class Level:
         self.setup()
 
     def setup(self):
-        self.player = Player(
-            (settings.SCREEN_WIDTH // 2, settings.SCREEN_HEIGHT // 2), self.all_sprites)
+        self.player = Player((settings.SCREEN_WIDTH // 2, settings.SCREEN_HEIGHT // 2), self.all_sprites)
         self.player.enter_level(self)
         self.stump = Obstacle(self.all_sprites)
         self.obstacles = [self.stump]
@@ -21,4 +20,3 @@ class Level:
     def run(self, dt):
         self.display_surface.fill(colors.PASTEL_GREEN)
         self.all_sprites.update(dt)
-
