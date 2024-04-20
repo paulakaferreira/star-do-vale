@@ -25,12 +25,13 @@ strict=true
 exclude = ["__pycache__"]
 
 [tool.ruff]
-ignore = ["F503", "E203"]
-extend-select = [
+lint.ignore = ["F503", "E203"]
+lint.extend-select = [
   "E", # pycodestyle
   "W", # pycodestyle
   "I", # isort
   "C", # complex-structure
+  "F", # format
 ]
 line-length = 120
 exclude = ["__pycache__", "venv", "migrations"]
