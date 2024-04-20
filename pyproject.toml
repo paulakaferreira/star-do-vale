@@ -11,8 +11,8 @@ pygame = "^2.5.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"
-ruff = "^0.1.5"
-mypy = "^1.7.0"
+mypy = "^1.9.0"
+ruff = "^0.4.1"
 
 [build-system]
 requires = ["poetry-core"]
@@ -25,12 +25,13 @@ strict=true
 exclude = ["__pycache__"]
 
 [tool.ruff]
-ignore = ["F503", "E203"]
-extend-select = [
+lint.ignore = ["F503", "E203"]
+lint.extend-select = [
   "E", # pycodestyle
   "W", # pycodestyle
   "I", # isort
   "C", # complex-structure
+  "F", # format
 ]
 line-length = 120
 exclude = ["__pycache__", "venv", "migrations"]
