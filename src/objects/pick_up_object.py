@@ -12,14 +12,14 @@ class PickUpObject(pygame.sprite.Sprite):
 
     name: str
     price: int
-    pos: tuple[int, int]
+    pos: pygame.math.Vector2
     image: Surface
     rect: Rect
 
     def __init__(self, group: Any) -> None:
         super().__init__(group)
 
-    def kill(self):
+    def kill(self) -> None:
         self.kill()
 
     def get_hitbox(self) -> Rect:
