@@ -8,7 +8,10 @@ from pygame.surface import Surface
 from src import settings
 from src.level import Level
 
+from .objects.pick_up_object import PickUpObject
 from .support import import_folder
+
+MAX_INVENTORY_CAPACITY = 32
 
 
 class Player(pygame.sprite.Sprite):
@@ -22,16 +25,20 @@ class Player(pygame.sprite.Sprite):
         self.animation_time: float = 0
         self.animation_speed = 4  # cycle through 4 sprites each second
 
-        # general setup
+        # General setup
         self.image: Surface = self.animations[self.status][self.animation_index]
         self.rect: Rect = self.image.get_rect(center=pos)
 
-        # movement setup
+        # Movement setup
         self.direction = pygame.math.Vector2()
         self.pos = pygame.math.Vector2(self.rect.center)
         self.speed = 200
         self.hitbox_vertical_offset = 20
         self.level: Level | None = None
+
+        # Inventory
+        self.inventory: list[PickUpObject] = []
+        self.inventory_capactiy: int = 8
 
     @property
     def animation_index(self) -> int:
@@ -123,8 +130,23 @@ class Player(pygame.sprite.Sprite):
 
         self.rect.center = self.pos  # type: ignore
 
+        for pick_up_obj in self.level.pick_up_objects:
+            if pygame.sprite.collide_rect(self, pick_up_obj):
+                self.pick_up_object(pick_up_obj)
+
     def animate(self, dt: float) -> None:
         self.animation_time += self.animation_speed * dt
         if self.animation_time >= len(self.animations[self.status]):
             self.animation_time = 0
         self.image = self.animations[self.status][self.animation_index]
+
+    def pick_up_object(self, obj: PickUpObject) -> None:
+        if len(self.inventory) < self.inventory_capactiy:
+            self.inventory.append(obj)
+            obj.kill()
+        # TODO: add pop-up message logic
+
+    def upgrade_inventory(self) -> None:
+        if self.inventory_capactiy <= MAX_INVENTORY_CAPACITY:
+            self.inventory_capactiy += 8
+        # TODO: add pop-up message logic
