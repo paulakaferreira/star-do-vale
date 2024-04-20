@@ -19,9 +19,6 @@ class PickUpObject(pygame.sprite.Sprite):
     def __init__(self, group: Any) -> None:
         super().__init__(group)
 
-    def kill(self) -> None:
-        self.kill()
-
     def get_hitbox(self) -> Rect:
         hitbox = self.rect.copy()
         hitbox.center = self.rect.center

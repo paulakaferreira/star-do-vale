@@ -8,8 +8,8 @@ from pygame.surface import Surface
 from src import settings
 from src.level import Level
 
-from .support import import_folder
 from .objects.pick_up_object import PickUpObject
+from .support import import_folder
 
 MAX_INVENTORY_CAPACITY = 32
 
