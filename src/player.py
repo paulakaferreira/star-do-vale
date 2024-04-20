@@ -22,16 +22,20 @@ class Player(pygame.sprite.Sprite):
         self.animation_time: float = 0
         self.animation_speed = 4  # cycle through 4 sprites each second
 
-        # general setup
+        # General setup
         self.image: Surface = self.animations[self.status][self.animation_index]
         self.rect: Rect = self.image.get_rect(center=pos)
 
-        # movement setup
+        # Movement setup
         self.direction = pygame.math.Vector2()
         self.pos = pygame.math.Vector2(self.rect.center)
         self.speed = 200
         self.hitbox_vertical_offset = 20
         self.level: Level | None = None
+
+        # Inventory
+        self.inventory = []
+        self.inventory_capactiy = 16
 
     @property
     def animation_index(self) -> int:
@@ -128,3 +132,7 @@ class Player(pygame.sprite.Sprite):
         if self.animation_time >= len(self.animations[self.status]):
             self.animation_time = 0
         self.image = self.animations[self.status][self.animation_index]
+
+    def pick_up_object(self, obj):
+        if len(self.inventory) <= self.inventory_capactiy:
+            self.inventory.append(obj)

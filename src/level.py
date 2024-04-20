@@ -6,7 +6,7 @@ from pygame.surface import Surface
 
 from src import colors, settings, support
 
-from .objects import Obstacle
+from .objects.pick_up_object import Obstacle
 
 
 def get_surfaces() -> dict[str, list[Surface]]:
