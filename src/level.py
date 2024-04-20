@@ -30,7 +30,7 @@ class Level:
         global surfaces
         self.player = Player((settings.SCREEN_WIDTH // 2, settings.SCREEN_HEIGHT // 2), self.all_sprites)
         self.player.enter_level(self)
-        
+
         # add stump
         stump_image = self.surfaces["stumps"][0]
         self.stump = Obstacle(self.all_sprites, (320, 100), stump_image)
