@@ -7,7 +7,7 @@ from pygame.surface import Surface
 from src import colors, settings, support
 
 from .objects.obstacle_object import Obstacle
-from .objects.pick_up_object import Acerola
+from .objects.pick_up_object import Acerola, Jabuticaba, Jaca
 
 
 def get_surfaces() -> dict[str, list[Surface]]:
@@ -37,9 +37,11 @@ class Level:
         self.stump = Obstacle(self.all_sprites, (320, 100), stump_image)
         self.obstacles = [self.stump]
 
-        # add acerola
+        # add fruit
         self.acerola = Acerola(self.all_sprites, (130, 30))
-        self.pick_up_objects = [self.acerola]
+        self.jabuticaba = Jabuticaba(self.all_sprites, (70, 205))
+        self.jaca = Jaca(self.all_sprites, (110, 150))
+        self.pick_up_objects = [self.acerola, self.jabuticaba, self.jaca]
 
     def run(self, dt: float) -> None:
         self.display_surface.fill(colors.PASTEL_GREEN)
