@@ -9,8 +9,8 @@ from pygame.surface import Surface
 from src import settings, support
 
 from . import colors
-from .objects.obstacle_object import Obstacle
-from .objects.pick_up_object import Acerola, Jabuticaba, Jaca
+from .objects.collectable import Acerola, Collectable, Jabuticaba, Jaca
+from .objects.obstacle import Obstacle
 from .support import handle_sprite_position
 
 if TYPE_CHECKING:
@@ -26,6 +26,9 @@ def get_surfaces() -> dict[str, list[Surface]]:
 
 
 class Level:
+    collectables: list[Collectable] = []
+    obstacles: list[Obstacle] = []
+
     def __init__(self, game: Game) -> None:
         self.display_surface = pygame.display.get_surface()
         self.all_sprites: Group[Any] = Group()
@@ -45,10 +48,10 @@ class Level:
         self.obstacles = [self.stump]
 
         # add fruit
-        self.acerola = Acerola(self.all_sprites, (130, 30))
-        self.jabuticaba = Jabuticaba(self.all_sprites, (70, 205))
-        self.jaca = Jaca(self.all_sprites, (110, 150))
-        self.pick_up_objects = [self.acerola, self.jabuticaba, self.jaca]
+        self.acerola = Acerola(self.all_sprites, (130, 30), self)
+        self.jabuticaba = Jabuticaba(self.all_sprites, (70, 205), self)
+        self.jaca = Jaca(self.all_sprites, (110, 150), self)
+        self.collectables = [self.acerola, self.jabuticaba, self.jaca]
 
     def run(self, dt: float) -> None:
         self.all_sprites.update(dt)

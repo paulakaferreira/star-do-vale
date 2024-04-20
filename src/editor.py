@@ -4,8 +4,6 @@ from .level import Level
 
 
 class Editor(Level):
-    obstacles = []
-
     def setup(self) -> None:
         from .player import Player
 

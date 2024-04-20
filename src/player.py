@@ -8,7 +8,7 @@ from pygame.surface import Surface
 from src import settings
 from src.level import Level
 
-from .objects.pick_up_object import PickUpObject
+from .objects.collectable import Collectable
 from .support import import_folder
 
 MAX_INVENTORY_CAPACITY = 32
@@ -37,8 +37,8 @@ class Player(pygame.sprite.Sprite):
         self.level: Level | None = None
 
         # Inventory
-        self.inventory: list[PickUpObject] = []
-        self.inventory_capactiy: int = 8
+        self.inventory: list[Collectable] = []
+        self.inventory_capactiy: int = 2
 
     @property
     def animation_index(self) -> int:
@@ -130,9 +130,20 @@ class Player(pygame.sprite.Sprite):
 
         self.rect.center = self.pos  # type: ignore
 
-        for pick_up_obj in self.level.pick_up_objects:
-            if pygame.sprite.collide_rect(self, pick_up_obj):
-                self.pick_up_object(pick_up_obj)
+        for collectable in self.level.collectables:
+            if collectable.new_collision(self):
+                if self.can_collect(collectable):
+                    self.inventory.append(collectable.collect())
+                else:
+                    self.inventory_full_alert()
+
+    def inventory_full_alert(self) -> None:
+        try:
+            pygame.mixer.init()
+            pygame.mixer.music.load("sounds/inventory_full.wav")
+            pygame.mixer.music.play()
+        except Exception:
+            pass
 
     def animate(self, dt: float) -> None:
         self.animation_time += self.animation_speed * dt
@@ -140,11 +151,8 @@ class Player(pygame.sprite.Sprite):
             self.animation_time = 0
         self.image = self.animations[self.status][self.animation_index]
 
-    def pick_up_object(self, obj: PickUpObject) -> None:
-        if len(self.inventory) < self.inventory_capactiy:
-            self.inventory.append(obj)
-            obj.kill()
-        # TODO: add pop-up message logic
+    def can_collect(self, obj: Collectable) -> bool:
+        return len(self.inventory) < self.inventory_capactiy
 
     def upgrade_inventory(self) -> None:
         if self.inventory_capactiy <= MAX_INVENTORY_CAPACITY:
