@@ -13,7 +13,7 @@ class Game:
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), HWSURFACE | DOUBLEBUF | RESIZABLE)
         self.fake_screen = self.screen.copy()
-        pygame.display.set_caption("Estar do Vale")
+        pygame.display.set_caption("Star do Vale")
         self.clock = pygame.time.Clock()
         self.level = Level()
         self.running = True

@@ -129,6 +129,10 @@ class Player(pygame.sprite.Sprite):
 
         self.rect.center = self.pos  # type: ignore
 
+        for pick_up_obj in self.level.pick_up_objects:
+            if pygame.sprite.collide_rect(self, pick_up_obj):
+                self.pick_up_object(pick_up_obj)
+
     def animate(self, dt: float) -> None:
         self.animation_time += self.animation_speed * dt
         if self.animation_time >= len(self.animations[self.status]):
@@ -138,6 +142,7 @@ class Player(pygame.sprite.Sprite):
     def pick_up_object(self, obj) -> None:
         if len(self.inventory) < self.inventory_capactiy:
             self.inventory.append(obj)
+            obj.kill()
         # TODO: add pop-up message logic
 
     def upgrade_inventory(self) -> None:

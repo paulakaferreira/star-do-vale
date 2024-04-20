@@ -35,8 +35,11 @@ class Level:
         # add stump
         stump_image = self.surfaces["stumps"][0]
         self.stump = Obstacle(self.all_sprites, (320, 100), stump_image)
-        self.acerola = Acerola(self.all_sprites, (130, 30))
         self.obstacles = [self.stump]
+
+        # add acerola
+        self.acerola = Acerola(self.all_sprites, (130, 30))
+        self.pick_up_objects = [self.acerola]
 
     def run(self, dt: float) -> None:
         self.display_surface.fill(colors.PASTEL_GREEN)
