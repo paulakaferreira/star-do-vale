@@ -10,6 +10,7 @@ from src.level import Level
 
 from .support import import_folder
 
+MAX_INVENTORY_CAPACITY = 32
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos: tuple[float, float], group: Any) -> None:
@@ -35,7 +36,7 @@ class Player(pygame.sprite.Sprite):
 
         # Inventory
         self.inventory = []
-        self.inventory_capactiy = 16
+        self.inventory_capactiy = 8
 
     @property
     def animation_index(self) -> int:
@@ -133,6 +134,14 @@ class Player(pygame.sprite.Sprite):
             self.animation_time = 0
         self.image = self.animations[self.status][self.animation_index]
 
-    def pick_up_object(self, obj):
-        if len(self.inventory) <= self.inventory_capactiy:
+    def pick_up_object(self, obj) -> None:
+        if len(self.inventory) < self.inventory_capactiy:
             self.inventory.append(obj)
+        else:
+            # TODO: add pop-up message logic
+            pass
+
+    def upgrade_inventory(self) -> None:
+        if self.inventory_capactiy <= MAX_INVENTORY_CAPACITY:
+            self.inventory_capactiy += 8
+        # TODO: add pop-up message logic

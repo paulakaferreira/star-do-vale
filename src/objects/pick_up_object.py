@@ -13,13 +13,22 @@ class PickUpObject(pygame.sprite.Sprite):
     Contain only one surface.
     Should disapear once touched by the first player.
     """
-    def __init__(self, name: str, group: Any, pos: Any) -> None:
-        super().__init__(group)
-        self.name = name
-        self.pos = pos
-        self.rect = self.image.get_rect(center=self.pos)
+    name: str
+    price: int
+    pos: tuple[int, int]
+    image: Surface
 
-        # TODO: adapt for future objects
-        full_path = f"graphics/fruit/{name}.png"
-        self.surface = pygame.image.load(full_path).convert_alpha()
-        self.image = self.surface
+    def __init__(self, group: Any) -> None:
+        super().__init__(group)
+
+
+class Acerola(PickUpObject):
+    
+    def __init__(self, group: Any, pos: tuple[int, int]) -> None:
+        super().__init__(group)
+        self.name = "acerola"
+        self.price = 6
+        self.pos = pygame.math.Vector2(pos)
+        img_path = f"graphics/fruit/{self.name}.png"
+        self.image = pygame.image.load(img_path).convert_alpha()
+        self.rect = self.image.get_rect(center=self.pos)

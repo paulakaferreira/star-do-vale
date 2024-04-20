@@ -6,7 +6,8 @@ from pygame.surface import Surface
 
 from src import colors, settings, support
 
-from .objects.pick_up_object import Obstacle
+from .objects.obstacle_object import Obstacle
+from .objects.pick_up_object import Acerola
 
 
 def get_surfaces() -> dict[str, list[Surface]]:
@@ -34,6 +35,7 @@ class Level:
         # add stump
         stump_image = self.surfaces["stumps"][0]
         self.stump = Obstacle(self.all_sprites, (320, 100), stump_image)
+        self.acerola = Acerola(self.all_sprites, (130, 30))
         self.obstacles = [self.stump]
 
     def run(self, dt: float) -> None:
