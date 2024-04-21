@@ -24,11 +24,19 @@ class Player(pygame.sprite.Sprite):
 
         # Initialize animations
         self.sprites_folder = sprites_folder
-        self.animations: dict[str, list[Surface]] = {"up": [], "down": [], "left": [], "right": [], "down_idle": []}
+        self.animations: dict[str, list[Surface]] = {
+            "up": [],
+            "down": [],
+            "left": [],
+            "right": [],
+        }
+        self.animations.update({f"{k}_idle": [] for k in self.animations.keys()})
+
         self.import_assets()
         self.status = "down_idle"
         self.animation_time: float = 0
         self.animation_speed = 8  # cycle through 4 sprites each second
+        self.status = "down_idle"
 
         # General setup
         self.image: Surface = self.animations[self.status][self.animation_index]
@@ -67,9 +75,12 @@ class Player(pygame.sprite.Sprite):
 
     def input(self) -> None:
         keys = pygame.key.get_pressed()
-        self.status = "down_idle"
+
         self.direction.y = 0
         self.direction.x = 0
+
+        if not self.status.endswith("_idle"):
+            self.status += "_idle"
 
         if keys[pygame.K_LEFT]:
             self.status = "left"
