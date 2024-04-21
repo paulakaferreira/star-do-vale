@@ -1,14 +1,14 @@
+from __future__ import annotations
+
 from src import colors, settings
 
 from .level import Level
+from .player import Player
 
 
 class Editor(Level):
     def setup(self) -> None:
-        from .player import Player
-
-        global surfaces
-        self.player = Player((settings.SCREEN_WIDTH // 2, settings.SCREEN_HEIGHT // 2), self.all_sprites)
+        self.player = Player((settings.SCREEN_WIDTH // 2, settings.SCREEN_HEIGHT // 2), self.all_sprites, "capybaba")
         self.player.enter_level(self)
 
     def run(self, dt: float) -> None:
