@@ -1,11 +1,11 @@
 import pygame
 from pygame.locals import DOUBLEBUF, HWSURFACE, RESIZABLE
 
-from src import colors
-
+from .editor import Editor
 from .level import Level
+from .menu import Menu
 from .settings import SCREEN_HEIGHT, SCREEN_WIDTH
-from .support import handle_resize_event, handle_sprite_position
+from .support import handle_resize_event
 
 
 class Game:
@@ -15,8 +15,11 @@ class Game:
         self.fake_screen = self.screen.copy()
         pygame.display.set_caption("Star do Vale")
         self.clock = pygame.time.Clock()
-        self.level = Level()
+        self.level = Level(self)
         self.running = True
+        self.menu = Menu(self)
+        self.editor = Editor(self)
+        self.cur_level = self.level
 
     def run(self) -> None:
         while self.running:
@@ -25,17 +28,14 @@ class Game:
                     self.running = False
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        self.running = False
+                        self.menu.open()
                 if event.type == pygame.VIDEORESIZE:
                     window_size = handle_resize_event(event)
                     self.screen = pygame.display.set_mode(window_size, HWSURFACE | DOUBLEBUF | RESIZABLE)
 
-            self.fake_screen.fill(colors.PASTEL_GREEN)
+            self.cur_level.update_screen(self.fake_screen)
             dt = self.clock.tick(60) / 1000
-            self.level.run(dt)
-
-            sorted_sprites = handle_sprite_position(self)
-            sorted_sprites.draw(self.fake_screen)
+            self.cur_level.run(dt)
 
             self.screen.blit(
                 pygame.transform.scale(self.fake_screen, self.screen.get_rect().size),
