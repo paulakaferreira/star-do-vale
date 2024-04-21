@@ -37,8 +37,8 @@ class Player(pygame.sprite.Sprite):
         # Movement setup
         self.direction = pygame.math.Vector2()
         self.pos = pygame.math.Vector2(self.rect.center)
-        self.speed = 120
-        self.hitbox_vertical_offset = 20
+        self.speed = 100
+        self.hitbox_vertical_offset = 0
         self.level: Level | None = None
 
         # Inventory
