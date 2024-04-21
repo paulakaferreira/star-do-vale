@@ -12,6 +12,7 @@ from src import settings
 from .objects.collectable import Collectable
 from .objects.tile import Tile
 from .support import import_folder
+from .settings import SCREEN_HEIGHT, SCREEN_WIDTH, TILE_SIZE
 
 if TYPE_CHECKING:
     from .level import Level
@@ -155,21 +156,24 @@ class Player(pygame.sprite.Sprite):
                 else:
                     self.inventory_full_alert()
 
-    # TODO: modify once actions are stablished
     def plant(self) -> None:
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_1]:
-            player_tile_x = self.pos.x // 32
-            player_tile_y = self.pos.y // 32
+        if keys[pygame.K_1]: # TODO: modify once actions are stablished
+            target_x = self.pos.x // TILE_SIZE
+            target_y = self.pos.y // TILE_SIZE
 
-            current_tile = None
-            for tile in self.level.all_tiles:
-                if tile.rect.collidepoint(self.pos.x, self.pos.y):
-                    current_tile = tile
-                    break
+            if self.direction.x < 0:
+                target_x -= 1
+            elif self.direction.x > 0:
+                target_x += 1
+            elif self.direction.y < 0:
+                target_y -= 1
+            elif self.direction.y > 0:
+                target_y += 1
 
-            if current_tile:
-                new_tile = Tile(self.level.all_tiles, (player_tile_x * 32, player_tile_y * 32), "treated-sand")
+            if 0 <= target_x < SCREEN_WIDTH and 0 <= target_y < SCREEN_HEIGHT:
+                new_tile_pos = (target_x * TILE_SIZE, target_y * TILE_SIZE)
+                new_tile = Tile(self.level.all_tiles, new_tile_pos, "treated-sand")
                 self.level.all_tiles.add(new_tile)
 
     def inventory_full_alert(self) -> None:

@@ -14,6 +14,7 @@ from .objects.obstacle import Obstacle
 from .objects.tile import Tile
 from .player import Player
 from .support import handle_sprite_position
+from .settings import SCREEN_HEIGHT, SCREEN_WIDTH
 
 if TYPE_CHECKING:
     from .main import Game
@@ -40,7 +41,7 @@ class Level:
         self.setup()
 
     def setup(self) -> None:
-        self.player = Player((settings.SCREEN_WIDTH // 2, settings.SCREEN_HEIGHT // 2), self.all_interactables, "capybaba")
+        self.player = Player((SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2), self.all_interactables, "capybaba")
         self.player.enter_level(self)
 
         # add stump
@@ -55,9 +56,9 @@ class Level:
         self.collectables = [self.acerola, self.jabuticaba, self.jaca]
 
         # display tile
-        area = [(x, y) for x in range(0, 800, 32) for y in range(0, 600, 32)]
+        area = [(x, y) for x in range(0, SCREEN_WIDTH, 32) for y in range(0, SCREEN_HEIGHT, 32)]
         for pos in area:
-            leaf_tile = Tile(self.all_tiles, pos, name="basic-sand")
+            Tile(self.all_tiles, pos, name="basic-sand")
 
     def run(self, dt: float) -> None:
         self.all_interactables.update(dt)
