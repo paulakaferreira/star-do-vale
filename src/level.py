@@ -11,6 +11,7 @@ from src import settings, support
 from . import colors
 from .objects.collectable import Acerola, Collectable, Jabuticaba, Jaca
 from .objects.obstacle import Obstacle
+from .objects.tile import Tile
 from .player import Player
 from .support import handle_sprite_position
 
@@ -32,31 +33,38 @@ class Level:
 
     def __init__(self, game: Game) -> None:
         self.display_surface = pygame.display.get_surface()
-        self.all_sprites: Group[Any] = Group()
+        self.all_interactables: Group[Any] = Group()
+        self.all_tiles: Group[Any] = Group()
         self.surfaces = get_surfaces()
         self.game = game
         self.setup()
 
     def setup(self) -> None:
-        self.player = Player((settings.SCREEN_WIDTH // 2, settings.SCREEN_HEIGHT // 2), self.all_sprites, "capybaba")
+        self.player = Player((settings.SCREEN_WIDTH // 2, settings.SCREEN_HEIGHT // 2), self.all_interactables, "capybaba")
         self.player.enter_level(self)
 
         # add stump
         stump_image = self.surfaces["stumps"][0]
-        self.stump = Obstacle(self.all_sprites, (320, 100), stump_image)
+        self.stump = Obstacle(self.all_interactables, (320, 100), stump_image)
         self.obstacles = [self.stump]
 
         # add fruit
-        self.acerola = Acerola(self.all_sprites, (130, 30), self)
-        self.jabuticaba = Jabuticaba(self.all_sprites, (70, 205), self)
-        self.jaca = Jaca(self.all_sprites, (110, 150), self)
+        self.acerola = Acerola(self.all_interactables, (130, 30), self)
+        self.jabuticaba = Jabuticaba(self.all_interactables, (70, 205), self)
+        self.jaca = Jaca(self.all_interactables, (110, 150), self)
         self.collectables = [self.acerola, self.jabuticaba, self.jaca]
 
+        # display tile
+        area = [(x, y) for x in range(0, 800, 32) for y in range(0, 600, 32)]
+        for pos in area:
+            leaf_tile = Tile(self.all_tiles, pos, name="basic-sand")
+
     def run(self, dt: float) -> None:
-        self.all_sprites.update(dt)
+        self.all_interactables.update(dt)
 
     def update_screen(self, screen: Surface) -> None:
         screen.fill(colors.PASTEL_GREEN)
         sorted_sprites = handle_sprite_position(self.game)
 
+        self.all_tiles.draw(screen)
         sorted_sprites.draw(screen)

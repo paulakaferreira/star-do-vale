@@ -10,6 +10,7 @@ from pygame.surface import Surface
 from src import settings
 
 from .objects.collectable import Collectable
+from .objects.tile import Tile
 from .support import import_folder
 
 if TYPE_CHECKING:
@@ -61,6 +62,7 @@ class Player(pygame.sprite.Sprite):
         self.input()
         self.move(dt)
         self.animate(dt)
+        self.plant()
 
     def get_hitbox(self) -> Rect:
         return self.rect.scale_by(1 / 5, 1 / 10)
@@ -152,6 +154,23 @@ class Player(pygame.sprite.Sprite):
                     self.inventory.append(collectable.collect())
                 else:
                     self.inventory_full_alert()
+
+    # TODO: modify once actions are stablished
+    def plant(self) -> None:
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_1]:
+            player_tile_x = self.pos.x // 32
+            player_tile_y = self.pos.y // 32
+
+            current_tile = None
+            for tile in self.level.all_tiles:
+                if tile.rect.collidepoint(self.pos.x, self.pos.y):
+                    current_tile = tile
+                    break
+
+            if current_tile:
+                new_tile = Tile(self.level.all_tiles, (player_tile_x * 32, player_tile_y * 32), "treated-sand")
+                self.level.all_tiles.add(new_tile)
 
     def inventory_full_alert(self) -> None:
         try:
