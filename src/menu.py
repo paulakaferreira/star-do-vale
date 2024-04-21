@@ -17,34 +17,29 @@ if TYPE_CHECKING:
 
 @dataclass
 class Button:
+    # content
     text: str
+
+    # rectangle
     pos: tuple[int, int]
-    width: int
-    height: int
-    font_color: tuple[int, int, int]
-    background_color: tuple[int, int, int]
-    callback: Callable[[], None]
+    width: int = 200
+    height: int = 45
 
-    def draw(self, screen: Surface) -> None:
-        mouse_pos = pygame.mouse.get_pos()
-        self.hover(mouse_pos)
+    # style
+    font_color: tuple[int, int, int] = colors.WHITE
+    selected_background_color: tuple[int, int, int] = colors.LIGHT_GRAY
+    unselected_background_color: tuple[int, int, int] = colors.GRAY
 
+    # behavior
+    callback: Callable[[], None] = lambda: None
+
+    def draw(self, screen: Surface, selected: bool) -> None:
         font = pygame.font.Font(None, 36)
         textobj = font.render(self.text, 1, self.font_color)
-        pygame.draw.rect(screen, self.background_color, self.rect)
+        self.rect = pygame.rect.Rect(*self.pos, self.width, self.height)
+        background_color = self.selected_background_color if selected else self.unselected_background_color
+        pygame.draw.rect(screen, background_color, self.rect)
         screen.blit(textobj, self.rect)
-
-    def collidepoint(self, mouse_pos: tuple[int, int]) -> bool:
-        return self.rect.collidepoint(mouse_pos)
-
-    def hover(self, mouse_pos: tuple[int, int]) -> None:
-        if hasattr(self, "rect") is False:
-            self.rect = pygame.rect.Rect(*self.pos, self.width, self.height)
-
-        if self.rect.collidepoint(mouse_pos):
-            self.background_color = colors.LIGHT_GRAY
-        else:
-            self.background_color = colors.GRAY
 
 
 def add_button(
@@ -62,37 +57,28 @@ def add_button(
 
 
 class Menu(Level):
+    selected_button_idx: int
+
     def __init__(self, *args, **kwargs) -> None:  # type: ignore
         super().__init__(*args, **kwargs)
         self.buttons = [
             Button(
                 text="Resume",
                 pos=(200, 100),
-                width=200,
-                height=45,
-                font_color=colors.WHITE,
-                background_color=colors.GRAY,
                 callback=self.go_to_game,
             ),
             Button(
                 text="Editor",
                 pos=(200, 150),
-                width=200,
-                height=45,
-                font_color=colors.WHITE,
-                background_color=colors.GRAY,
                 callback=self.go_to_editor,
             ),
             Button(
                 text="Quit",
                 pos=(200, 200),
-                width=200,
-                height=45,
-                font_color=colors.WHITE,
-                background_color=colors.GRAY,
                 callback=self.quit,
             ),
         ]
+        self.selected_button_idx = 0
 
     def quit(self) -> None:
         pygame.quit()
@@ -110,20 +96,30 @@ class Menu(Level):
         self.game.cur_level = self.game.editor
         pygame.display.set_caption("Editor")
 
+    @property
+    def selected_button(self) -> Button:
+        return self.buttons[self.selected_button_idx]
+
     def run(self, dt: float) -> None:
-        mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                for button in self.buttons:
-                    if button.collidepoint(mouse_pos):
-                        button.callback()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_DOWN:
+                    self.selected_button_idx += 1
+                    self.selected_button_idx %= len(self.buttons)
+
+                if event.key == pygame.K_UP:
+                    self.selected_button_idx -= 1
+                    self.selected_button_idx %= len(self.buttons)
+
+                if event.key == pygame.K_RETURN:
+                    self.selected_button.callback()
 
     def update_screen(self, screen: Surface) -> None:
         screen.fill(colors.BLACK)
 
         # Draw text on buttons
-        for button in self.buttons:
-            button.draw(screen)
+        for idx, button in enumerate(self.buttons):
+            button.draw(screen, selected=idx == self.selected_button_idx)
