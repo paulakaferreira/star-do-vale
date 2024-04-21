@@ -1,4 +1,6 @@
-from typing import Any
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
 
 import pygame
 from pygame.math import Vector2
@@ -6,24 +8,27 @@ from pygame.rect import Rect
 from pygame.surface import Surface
 
 from src import settings
-from src.level import Level
 
 from .objects.collectable import Collectable
 from .support import import_folder
+
+if TYPE_CHECKING:
+    from .level import Level
 
 MAX_INVENTORY_CAPACITY = 32
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos: tuple[float, float], group: Any) -> None:
+    def __init__(self, pos: tuple[float, float], group: Any, sprites_folder: str) -> None:
         super().__init__(group)
 
         # Initialize animations
+        self.sprites_folder = sprites_folder
         self.animations: dict[str, list[Surface]] = {"up": [], "down": [], "left": [], "right": [], "down_idle": []}
         self.import_assets()
         self.status = "down_idle"
         self.animation_time: float = 0
-        self.animation_speed = 4  # cycle through 4 sprites each second
+        self.animation_speed = 8  # cycle through 4 sprites each second
 
         # General setup
         self.image: Surface = self.animations[self.status][self.animation_index]
@@ -32,7 +37,7 @@ class Player(pygame.sprite.Sprite):
         # Movement setup
         self.direction = pygame.math.Vector2()
         self.pos = pygame.math.Vector2(self.rect.center)
-        self.speed = 200
+        self.speed = 120
         self.hitbox_vertical_offset = 20
         self.level: Level | None = None
 
@@ -57,7 +62,7 @@ class Player(pygame.sprite.Sprite):
 
     def import_assets(self) -> None:
         for key in self.animations.keys():
-            full_path = "graphics/character/" + key
+            full_path = f"graphics/{self.sprites_folder}/" + key
             self.animations[key] = import_folder(full_path)
 
     def input(self) -> None:

@@ -11,6 +11,7 @@ from src import settings, support
 from . import colors
 from .objects.collectable import Acerola, Collectable, Jabuticaba, Jaca
 from .objects.obstacle import Obstacle
+from .player import Player
 from .support import handle_sprite_position
 
 if TYPE_CHECKING:
@@ -37,9 +38,7 @@ class Level:
         self.setup()
 
     def setup(self) -> None:
-        from .player import Player
-
-        self.player = Player((settings.SCREEN_WIDTH // 2, settings.SCREEN_HEIGHT // 2), self.all_sprites)
+        self.player = Player((settings.SCREEN_WIDTH // 2, settings.SCREEN_HEIGHT // 2), self.all_sprites, "capybaba")
         self.player.enter_level(self)
 
         # add stump
