@@ -35,7 +35,7 @@ class Button:
 
     def draw(self, screen: Surface, selected: bool) -> None:
         font = pygame.font.Font(None, 36)
-        textobj = font.render(self.text, 1, self.font_color)
+        textobj = font.render(self.text, True, self.font_color)
         self.rect = pygame.rect.Rect(*self.pos, self.width, self.height)
         background_color = self.selected_background_color if selected else self.unselected_background_color
         pygame.draw.rect(screen, background_color, self.rect)
