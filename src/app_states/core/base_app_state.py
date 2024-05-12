@@ -15,6 +15,7 @@ class BaseAppState:
     def __init__(self, name: str, target_state_name: str, state_manager: AppStateManager):
         self.name = name
         self.target_state_name = target_state_name
+        self.previous_state_name = name
         self.outgoing_transition_data: dict[str, Any] = {}
         self.incoming_transition_data: dict[str, Any] = {}
         self.state_manager = state_manager
@@ -24,6 +25,7 @@ class BaseAppState:
         self.state_manager.register_state(self)
 
     def set_target_state_name(self, target_name: str) -> None:
+        self.state_manager.states[target_name].previous_state_name = self.name
         self.target_state_name = target_name
 
     def trigger_transition(self) -> None:
@@ -40,13 +42,8 @@ class BaseAppState:
 
     def handle_event(self, event: pygame.Event) -> None:
         if event.type == pygame.QUIT:
-            self.set_target_state_name("quit")
+            self.set_target_state_name("exit")
             self.trigger_transition()
-
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                self.set_target_state_name("quit")
-                self.trigger_transition()
 
         if event.type == pygame.VIDEORESIZE:
             window_size = handle_resize_event(event)

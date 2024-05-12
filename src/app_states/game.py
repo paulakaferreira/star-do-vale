@@ -14,8 +14,8 @@ if TYPE_CHECKING:
 
 
 class GameState(BaseAppState):
-    def __init__(self, ui_manager: UIManager, level: Level, screen: Surface, state_manger: AppStateManager):
-        super().__init__("game", "main_menu", state_manger)
+    def __init__(self, ui_manager: UIManager, level: Level, screen: Surface, state_manager: AppStateManager):
+        super().__init__("game", "main_menu", state_manager)
 
         self.ui_manager = ui_manager
         self.background_image = pygame.image.load("graphics/app_states/game/background.png").convert()
@@ -29,6 +29,14 @@ class GameState(BaseAppState):
 
     def end(self) -> None:
         pass
+
+    def handle_event(self, event: pygame.Event) -> None:
+        super().handle_event(event)
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                self.set_target_state_name("main_menu")
+                self.trigger_transition()
 
     def run(self, surface: Surface, time_delta: float) -> None:
         # If I don't do this, keys are not available for the Player logic.

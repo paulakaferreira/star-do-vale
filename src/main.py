@@ -5,11 +5,11 @@ from pygame.locals import DOUBLEBUF, HWSURFACE, RESIZABLE
 from pygame_gui import UIManager
 
 from .app_states.core.app_state_manager import AppStateManager
+from .app_states.exit import ExitState
 from .app_states.game import GameState
 from .app_states.main_menu import MainMenuState
 from .editor import Editor
 from .level import Level
-from .menu import Menu
 from .settings import SCREEN_HEIGHT, SCREEN_WIDTH
 
 
@@ -24,7 +24,6 @@ class Game:
         self.clock = pygame.time.Clock()
         self.level = Level(self)
         self.running = True
-        self.menu = Menu(self)
         self.editor = Editor(self)
         self.cur_level = self.level
 
@@ -32,6 +31,7 @@ class Game:
         self.app_state_manager = AppStateManager()
         MainMenuState(ui_manager, self.app_state_manager)
         GameState(ui_manager, self.cur_level, self.screen, self.app_state_manager)
+        ExitState(ui_manager, self.app_state_manager)
         self.app_state_manager.set_initial_state("main_menu")
 
     def run(self) -> None:
