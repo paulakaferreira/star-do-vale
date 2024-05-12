@@ -8,6 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 pygame = "^2.5.0"
+pygame-gui = "^0.6.10"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"
