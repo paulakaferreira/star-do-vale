@@ -18,7 +18,6 @@ class GameState(BaseAppState):
         super().__init__("game", "main_menu", state_manager)
 
         self.ui_manager = ui_manager
-        self.background_image = pygame.image.load("graphics/app_states/game/background.png").convert()
 
         self.cur_level = level
         self.screen = screen
