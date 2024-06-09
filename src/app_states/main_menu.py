@@ -57,7 +57,9 @@ class MainMenuState(BaseAppState):
 
     def handle_event(self, event: Event) -> None:
         super().handle_event(event)
+
         self.ui_manager.process_events(event)
+
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
             if event.ui_element == self.start_game_button:
                 self.set_target_state_name("game")

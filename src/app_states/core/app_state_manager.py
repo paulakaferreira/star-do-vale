@@ -19,6 +19,7 @@ class AppStateManager:
         from ..main_menu import MainMenuState
 
         self.states: dict[str, BaseAppState] = {}
+        self.previous_state: BaseAppState | None = None
         self.active_state: BaseAppState | None = None
         self.game = game
 
@@ -42,6 +43,7 @@ class AppStateManager:
                 self.active_state.end()
                 new_state_name = self.active_state.target_state_name
                 outgoing_data_copy = copy.deepcopy(self.active_state.outgoing_transition_data)
+                self.previous_state = self.active_state
                 self.active_state = self.states[new_state_name]
                 self.active_state.incoming_transition_data = outgoing_data_copy
                 self.active_state.start()
