@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 import pygame
 from pygame import Surface
+from pygame.event import Event
 from pygame_gui import UIManager
 
 from .core.base_app_state import BaseAppState
@@ -29,7 +30,7 @@ class GameState(BaseAppState):
     def end(self) -> None:
         pass
 
-    def handle_event(self, event: pygame.Event) -> None:
+    def handle_event(self, event: Event) -> None:
         super().handle_event(event)
 
         if event.type == pygame.KEYDOWN:

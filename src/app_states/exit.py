@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 import pygame
 import pygame_gui
+from pygame.event import Event
 from pygame_gui import UIManager
 from pygame_gui.windows import UIConfirmationDialog
 
@@ -31,7 +32,7 @@ class ExitState(BaseAppState):
     def end(self) -> None:
         self.exit_confirmation_dialog.kill()  # type: ignore
 
-    def handle_event(self, event: pygame.Event) -> None:
+    def handle_event(self, event: Event) -> None:
         super().handle_event(event)
 
         self.ui_manager.process_events(event)

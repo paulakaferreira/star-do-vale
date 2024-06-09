@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING, Any
 
 import pygame
 from pygame import Surface
+from pygame.event import Event
 
 from src.support import handle_resize_event
 
@@ -40,7 +41,7 @@ class BaseAppState:
     def run(self, surface: Surface, time_delta: float) -> None:
         pass
 
-    def handle_event(self, event: pygame.Event) -> None:
+    def handle_event(self, event: Event) -> None:
         if event.type == pygame.QUIT:
             self.set_target_state_name("exit")
             self.trigger_transition()

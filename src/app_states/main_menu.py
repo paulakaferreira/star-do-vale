@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 import pygame
 import pygame_gui
 from pygame import Surface
+from pygame.event import Event
 from pygame_gui import UIManager
 from pygame_gui.elements.ui_button import UIButton
 from pygame_gui.elements.ui_label import UILabel
@@ -37,7 +38,7 @@ class MainMenuState(BaseAppState):
         self.start_game_button.kill()  # type: ignore
         self.exit_game_button.kill()  # type: ignore
 
-    def handle_event(self, event: pygame.Event) -> None:
+    def handle_event(self, event: Event) -> None:
         super().handle_event(event)
         self.ui_manager.process_events(event)
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
