@@ -39,14 +39,25 @@ class BaseAppState:
         pass
 
     def run(self, time_delta: float) -> None:
+<<<<<<< HEAD
         surface = virtual_screen
         for event in pygame.event.get():
             self.handle_event(event)
 
         self.ui_manager.update(time_delta)
         self.ui_manager.draw_ui(surface)
+=======
+        pass
+>>>>>>> 7d0aa93 (udpate: remove intermediate display and use pygame global)
 
     def handle_event(self, event: Event) -> None:
         if event.type == pygame.QUIT:
             self.set_target_state_name("exit")
             self.trigger_transition()
+<<<<<<< HEAD
+=======
+
+        if event.type == pygame.VIDEORESIZE and False:
+            window_size = handle_resize_event(event)
+            self.screen = pygame.display.set_mode(window_size, pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.RESIZABLE)
+>>>>>>> 7d0aa93 (udpate: remove intermediate display and use pygame global)

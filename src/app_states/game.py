@@ -14,12 +14,21 @@ if TYPE_CHECKING:
 
 
 class GameState(BaseAppState):
+<<<<<<< HEAD
     def __init__(self, ui_manager: UIManager, state_manager: AppStateManager):
         super().__init__("game", "main_menu", ui_manager, state_manager)
         self.level = Level(self.state_manager.game)
 
     def set_level(self, level: Level) -> None:
         self.level = level
+=======
+    def __init__(self, ui_manager: UIManager, level: Level, state_manager: AppStateManager):
+        super().__init__("game", "main_menu", state_manager)
+
+        self.ui_manager = ui_manager
+
+        self.cur_level = level
+>>>>>>> 7d0aa93 (udpate: remove intermediate display and use pygame global)
 
     def start(self) -> None:
         pass
@@ -40,6 +49,12 @@ class GameState(BaseAppState):
         for event in pygame.event.get():
             self.handle_event(event)
 
+<<<<<<< HEAD
         self.level.update_screen()
         self.level.run(time_delta)
         self.level.update_screen()
+=======
+        self.cur_level.update_screen()
+        self.cur_level.run(time_delta)
+        self.cur_level.update_screen()
+>>>>>>> 7d0aa93 (udpate: remove intermediate display and use pygame global)
