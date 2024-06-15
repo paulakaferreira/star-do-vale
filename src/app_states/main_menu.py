@@ -35,8 +35,8 @@ class MainMenuState(BaseAppState):
         )
 
     def end(self) -> None:
-        self.start_game_button.kill()  # type: ignore
-        self.exit_game_button.kill()  # type: ignore
+        self.start_game_button.kill()
+        self.exit_game_button.kill()
 
     def handle_event(self, event: Event) -> None:
         super().handle_event(event)

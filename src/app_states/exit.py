@@ -30,7 +30,7 @@ class ExitState(BaseAppState):
         )
 
     def end(self) -> None:
-        self.exit_confirmation_dialog.kill()  # type: ignore
+        self.exit_confirmation_dialog.kill()
 
     def handle_event(self, event: Event) -> None:
         super().handle_event(event)
