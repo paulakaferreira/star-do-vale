@@ -12,7 +12,7 @@ from src import settings
 from .objects.collectable import Collectable
 from .objects.tile import Tile
 from .support import import_folder
-from .settings import SCREEN_HEIGHT, SCREEN_WIDTH, TILE_SIZE
+from .settings import SCREEN_HEIGHT, SCREEN_WIDTH, TILE_SIZE, HALF_TILE
 
 if TYPE_CHECKING:
     from .level import Level
@@ -79,11 +79,11 @@ class Player(pygame.sprite.Sprite):
     def input(self) -> None:
         keys = pygame.key.get_pressed()
 
-        self.direction.y = 0
-        self.direction.x = 0
-
         if not self.status.endswith("_idle"):
             self.status += "_idle"
+        
+        self.direction.y = 0
+        self.direction.x = 0
 
         if keys[pygame.K_LEFT]:
             self.status = "left"
@@ -159,20 +159,21 @@ class Player(pygame.sprite.Sprite):
     def plant(self) -> None:
         keys = pygame.key.get_pressed()
         if keys[pygame.K_1]: # TODO: modify once actions are stablished
+
             target_x = self.pos.x // TILE_SIZE
             target_y = self.pos.y // TILE_SIZE
 
-            if self.direction.x < 0:
+            if self.status == "left_idle":
                 target_x -= 1
-            elif self.direction.x > 0:
+            elif self.status == "right_idle":
                 target_x += 1
-            elif self.direction.y < 0:
+            elif self.status == "up_idle":
                 target_y -= 1
-            elif self.direction.y > 0:
+            elif self.status == "down_idle":
                 target_y += 1
 
             if 0 <= target_x < SCREEN_WIDTH and 0 <= target_y < SCREEN_HEIGHT:
-                new_tile_pos = (target_x * TILE_SIZE, target_y * TILE_SIZE)
+                new_tile_pos = (target_x * TILE_SIZE + HALF_TILE, target_y * TILE_SIZE + HALF_TILE)
                 new_tile = Tile(self.level.all_tiles, new_tile_pos, "treated-sand")
                 self.level.all_tiles.add(new_tile)
 
