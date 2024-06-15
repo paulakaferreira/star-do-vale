@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 import pygame
-from pygame import Surface
 from pygame.event import Event
 
 from src.support import handle_resize_event
@@ -38,7 +37,7 @@ class BaseAppState:
     def end(self) -> None:
         pass
 
-    def run(self, surface: Surface, time_delta: float) -> None:
+    def run(self, time_delta: float) -> None:
         pass
 
     def handle_event(self, event: Event) -> None:
@@ -46,6 +45,6 @@ class BaseAppState:
             self.set_target_state_name("exit")
             self.trigger_transition()
 
-        if event.type == pygame.VIDEORESIZE:
+        if event.type == pygame.VIDEORESIZE and False:
             window_size = handle_resize_event(event)
             self.screen = pygame.display.set_mode(window_size, pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.RESIZABLE)
