@@ -10,7 +10,7 @@ class Obstacle(pygame.sprite.Sprite):
         super().__init__(group)
         self.pos = pygame.math.Vector2(pos)
         self.image = image
-        self.rect = self.image.get_rect(center=self.pos)
+        self.rect: Rect = self.image.get_rect(center=self.pos)
         self.hitbox = self.get_hitbox()
 
     def get_hitbox(self) -> Rect:

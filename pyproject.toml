@@ -7,7 +7,9 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-pygame = "^2.5.0"
+pygame = "^2.5.2"
+pygame-gui = "0.6.9"
+pygame-ce = "^2.5.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"
@@ -22,7 +24,7 @@ build-backend = "poetry.core.masonry.api"
 ignore_missing_imports = true
 disable_error_code = ["misc"]
 strict=true
-exclude = ["__pycache__"]
+exclude = ["__pycache__", "venv"]
 
 [tool.ruff]
 lint.ignore = ["F503", "E203"]
@@ -34,4 +36,4 @@ lint.extend-select = [
   "F", # format
 ]
 line-length = 120
-exclude = ["__pycache__", "venv", "migrations"]
+exclude = ["__pycache__", "venv"]
