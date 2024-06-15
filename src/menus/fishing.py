@@ -4,6 +4,7 @@ import random
 from typing import TYPE_CHECKING
 
 import pygame
+from pygame import Event
 
 from src.screen import virtual_screen
 
@@ -18,7 +19,7 @@ class Fishing:
         self.bobber = Bobber()  # type: ignore
         self.progression_bar = ProgressionBar(self.fish, self.bobber)
 
-    def handle_event(self, event: pygame.Event) -> None:
+    def handle_event(self, event: Event) -> None:
         self.progression_bar.handle_event(event)
         self.bobber.handle_event(event)
         self.fish.handle_event(event)
@@ -45,7 +46,7 @@ class FishingElement:
         self.speed_count = 0
         self.initial_pos = (self.initial_pos[0], self.max_position)
 
-    def handle_event(self, event: pygame.Event) -> None:
+    def handle_event(self, event: Event) -> None:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_f:
                 self.show = not self.show
@@ -176,7 +177,7 @@ class Bobber(FishingElement):
         if abs(self.speed) > 0.1:
             self.update_position(time_delta)
 
-    def handle_event(self, event: pygame.Event) -> None:
+    def handle_event(self, event: Event) -> None:
         super().handle_event(event)
 
         if event.type == pygame.MOUSEWHEEL:
