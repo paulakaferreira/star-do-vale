@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 
 import pygame
 from pygame import Event
+from pygame.event import Event
 
 from src.screen import virtual_screen
 
