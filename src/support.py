@@ -39,3 +39,24 @@ def handle_sprite_position(self) -> Any:  # type: ignore
     for sprite in sorted(self.level.all_interactables.sprites(), key=lambda sprite: sprite.pos.y):
         sorted_sprites.add(sprite)
     return sorted_sprites
+
+
+def blit_centered(surface: Surface, image: Surface) -> None:
+    surface_width, surface_height = surface.get_size()
+    image_width, image_height = image.get_size()
+
+    x = (surface_width - image_width) // 2
+    y = (surface_height - image_height) // 2
+
+    surface.blit(image, (x, y))  # draw the background
+
+
+def ratio_to_lefttop(ratio: tuple[float, float], width_height: tuple[float, float]) -> tuple[float, float]:
+    surface = pygame.display.get_surface()
+    surface_width, surface_height = surface.get_size()
+    image_width, image_height = width_height
+
+    x = (surface_width - image_width) * ratio[0]
+    y = (surface_height - image_height) * ratio[1]
+
+    return (x, y)

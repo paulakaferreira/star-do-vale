@@ -4,11 +4,12 @@ from typing import TYPE_CHECKING
 
 import pygame
 import pygame_gui
-from pygame import Surface
 from pygame.event import Event
 from pygame_gui import UIManager
 from pygame_gui.elements.ui_button import UIButton
 from pygame_gui.elements.ui_label import UILabel
+
+from src.support import blit_centered, ratio_to_lefttop
 
 from .core.base_app_state import BaseAppState
 
@@ -27,11 +28,21 @@ class MainMenuState(BaseAppState):
         self.play_game_button: UIButton | None = None
 
     def start(self) -> None:
+        width_height = (150, 35)
+        left_top = ratio_to_lefttop((1 / 2, 3 / 4), width_height)
+
         self.start_game_button = UIButton(
-            pygame.Rect((437, 515), (150, 35)), "Start Game", self.ui_manager, tool_tip_text="<b>This is a tooltip.</b>"
+            pygame.Rect(left_top, width_height),
+            "Start Game",
+            self.ui_manager,
+            tool_tip_text="<b>This is a tooltip.</b>",
         )
+        left_top = (left_top[0], left_top[1] + width_height[1])
         self.exit_game_button = UIButton(
-            pygame.Rect((437, 550), (150, 35)), "Exit Game", self.ui_manager, tool_tip_text="<b>This is a tooltip.</b>"
+            pygame.Rect(left_top, width_height),
+            "Exit Game",
+            self.ui_manager,
+            tool_tip_text="<b>This is a tooltip.</b>",
         )
 
     def end(self) -> None:
@@ -55,12 +66,14 @@ class MainMenuState(BaseAppState):
             self.set_target_state_name("exit")
             self.trigger_transition()
 
-    def run(self, surface: Surface, time_delta: float) -> None:
+    def run(self, time_delta: float) -> None:
+        surface = pygame.display.get_surface()
+
         for event in pygame.event.get():
             self.handle_event(event)
 
         self.ui_manager.update(time_delta)
 
-        surface.blit(self.background_image, (0, 0))  # draw the background
+        blit_centered(surface, self.background_image)
 
         self.ui_manager.draw_ui(surface)
