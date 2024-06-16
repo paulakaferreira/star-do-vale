@@ -41,14 +41,7 @@ class BaseAppState:
         self.previous_virtual_screen = None
 
     def run(self, time_delta: float) -> None:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c63ba09 (fix: state transitions)
         surface = virtual_screen
-=======
->>>>>>> 31798e7 (fix: copy previous virtual_screen and blit on state change)
         for event in pygame.event.get():
             self.handle_event(event)
 
@@ -57,21 +50,8 @@ class BaseAppState:
         surface.blit(self.previous_virtual_screen, (0, 0))
         self.ui_manager.update(time_delta)
         self.ui_manager.draw_ui(surface)
-<<<<<<< HEAD
-=======
-        pass
->>>>>>> 7d0aa93 (udpate: remove intermediate display and use pygame global)
-=======
->>>>>>> c63ba09 (fix: state transitions)
 
     def handle_event(self, event: Event) -> None:
         if event.type == pygame.QUIT:
             self.set_target_state_name("exit")
             self.trigger_transition()
-<<<<<<< HEAD
-=======
-
-        if event.type == pygame.VIDEORESIZE and False:
-            window_size = handle_resize_event(event)
-            self.screen = pygame.display.set_mode(window_size, pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.RESIZABLE)
->>>>>>> 7d0aa93 (udpate: remove intermediate display and use pygame global)

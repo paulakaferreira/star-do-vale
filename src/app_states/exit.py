@@ -22,11 +22,7 @@ class ExitState(BaseAppState):
     def start(self) -> None:
         super().start()
         width_height = (300, 200)
-<<<<<<< HEAD
         left_top = ratio_to_lefttop((1 / 2, 7 / 8), width_height)
-=======
-        left_top = ratio_to_lefttop((1 / 2, 7 / 8), width_height, self.state_manager.game.screen)
->>>>>>> 7d0aa93 (udpate: remove intermediate display and use pygame global)
         self.exit_confirmation_dialog = UIConfirmationDialog(
             pygame.Rect(left_top, width_height),
             "Do you want to exit the game?",
@@ -52,18 +48,3 @@ class ExitState(BaseAppState):
             if event.ui_element == self.exit_confirmation_dialog.close_window_button:
                 self.set_target_state_name(self.previous_state_name)
                 self.trigger_transition()
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
-    def run(self, time_delta: float) -> None:
-        surface = pygame.display.get_surface()
-        for event in pygame.event.get():
-            self.handle_event(event)
-
-        self.ui_manager.update(time_delta)
-
-        self.ui_manager.draw_ui(surface)
->>>>>>> 7d0aa93 (udpate: remove intermediate display and use pygame global)
-=======
->>>>>>> c63ba09 (fix: state transitions)

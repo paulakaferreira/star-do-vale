@@ -9,10 +9,7 @@ from pygame_gui import UIManager
 from pygame_gui.elements.ui_button import UIButton
 from pygame_gui.elements.ui_label import UILabel
 
-<<<<<<< HEAD
 from src.screen import virtual_screen
-=======
->>>>>>> 7d0aa93 (udpate: remove intermediate display and use pygame global)
 from src.support import blit_centered, ratio_to_lefttop
 
 from .core.base_app_state import BaseAppState
@@ -32,30 +29,8 @@ class MainMenuState(BaseAppState):
         self.ui_elements: list[UIButton] = []
 
     def start(self) -> None:
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
         super().start()
->>>>>>> 31798e7 (fix: copy previous virtual_screen and blit on state change)
         self.create_ui_elements()
-=======
-        width_height = (150, 35)
-        left_top = ratio_to_lefttop((1 / 2, 3 / 4), width_height)
-
-        self.start_game_button = UIButton(
-            pygame.Rect(left_top, width_height),
-            "Start Game",
-            self.ui_manager,
-            tool_tip_text="<b>This is a tooltip.</b>",
-        )
-        left_top = (left_top[0], left_top[1] + width_height[1])
-        self.exit_game_button = UIButton(
-            pygame.Rect(left_top, width_height),
-            "Exit Game",
-            self.ui_manager,
-            tool_tip_text="<b>This is a tooltip.</b>",
-        )
->>>>>>> 7d0aa93 (udpate: remove intermediate display and use pygame global)
 
     def end(self) -> None:
         super().end()
@@ -95,25 +70,10 @@ class MainMenuState(BaseAppState):
             self.trigger_transition()
 
     def run(self, time_delta: float) -> None:
-<<<<<<< HEAD
-<<<<<<< HEAD
-        surface = virtual_screen
-=======
-        surface = pygame.display.get_surface()
-
->>>>>>> 7d0aa93 (udpate: remove intermediate display and use pygame global)
-=======
->>>>>>> 31798e7 (fix: copy previous virtual_screen and blit on state change)
         for event in pygame.event.get():
             self.handle_event(event)
 
         surface = virtual_screen
         self.ui_manager.update(time_delta)
-<<<<<<< HEAD
         blit_centered(self.background_image)
-=======
-
-        blit_centered(surface, self.background_image)
-
->>>>>>> 7d0aa93 (udpate: remove intermediate display and use pygame global)
         self.ui_manager.draw_ui(surface)

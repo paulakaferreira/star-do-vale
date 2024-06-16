@@ -3,13 +3,10 @@ from __future__ import annotations
 import copy
 from typing import TYPE_CHECKING
 
-<<<<<<< HEAD
 from pygame_gui import UIManager
 
 from src.settings import SCREEN_HEIGHT, SCREEN_WIDTH
 
-=======
->>>>>>> 7d0aa93 (udpate: remove intermediate display and use pygame global)
 if TYPE_CHECKING:
     from ...main import Game
     from .base_app_state import BaseAppState
@@ -17,7 +14,6 @@ if TYPE_CHECKING:
 
 class AppStateManager:
     def __init__(self, game: Game) -> None:
-<<<<<<< HEAD
         from ..exit import ExitState
         from ..game import GameState
         from ..main_menu import MainMenuState
@@ -32,11 +28,6 @@ class AppStateManager:
         ExitState(self.ui_manager, self)
 
         self.set_initial_state("main_menu")
-=======
-        self.states: dict[str, BaseAppState] = {}
-        self.active_state: BaseAppState | None = None
-        self.game = game
->>>>>>> 7d0aa93 (udpate: remove intermediate display and use pygame global)
 
     def register_state(self, state: BaseAppState) -> None:
         if state.name not in self.states:
