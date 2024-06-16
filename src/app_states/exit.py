@@ -23,8 +23,9 @@ class ExitState(BaseAppState):
         self.previous_state_name = "main_menu"
 
     def start(self) -> None:
+        print("start exit state")
         width_height = (300, 200)
-        left_top = ratio_to_lefttop((1 / 2, 7 / 8), width_height, self.state_manager.game.screen)
+        left_top = ratio_to_lefttop((1 / 2, 7 / 8), width_height)
         self.exit_confirmation_dialog = UIConfirmationDialog(
             pygame.Rect(left_top, width_height),
             "Do you want to exit the game?",

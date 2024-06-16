@@ -5,8 +5,6 @@ from typing import TYPE_CHECKING, Any
 import pygame
 from pygame.event import Event
 
-from src.support import handle_resize_event
-
 if TYPE_CHECKING:
     from .app_state_manager import AppStateManager
 
@@ -44,7 +42,3 @@ class BaseAppState:
         if event.type == pygame.QUIT:
             self.set_target_state_name("exit")
             self.trigger_transition()
-
-        if event.type == pygame.VIDEORESIZE and False:
-            window_size = handle_resize_event(event)
-            self.screen = pygame.display.set_mode(window_size, pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.RESIZABLE)
