@@ -3,29 +3,44 @@ from __future__ import annotations
 import copy
 from typing import TYPE_CHECKING
 
-from pygame import Surface
+from pygame_gui import UIManager
+
+from src.settings import SCREEN_HEIGHT, SCREEN_WIDTH
 
 if TYPE_CHECKING:
+    from ...main import Game
     from .base_app_state import BaseAppState
 
 
 class AppStateManager:
-    def __init__(self) -> None:
+    def __init__(self, game: Game) -> None:
+        from ..exit import ExitState
+        from ..game import GameState
+        from ..main_menu import MainMenuState
+
         self.states: dict[str, BaseAppState] = {}
         self.active_state: BaseAppState | None = None
+        self.game = game
+
+        self.ui_manager = UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
+        MainMenuState(self.ui_manager, self)
+        GameState(self.ui_manager, self)
+        ExitState(self.ui_manager, self)
+
+        self.set_initial_state("main_menu")
 
     def register_state(self, state: BaseAppState) -> None:
         if state.name not in self.states:
             self.states[state.name] = state
 
-    def run(self, surface: Surface, time_delta: float) -> bool:
+    def run(self, time_delta: float) -> bool:
         if self.active_state is not None:
-            self.active_state.run(surface, time_delta)
+            self.active_state.run(time_delta)
 
             if self.active_state.time_to_transition:
                 self.active_state.time_to_transition = False
-                new_state_name = self.active_state.target_state_name
                 self.active_state.end()
+                new_state_name = self.active_state.target_state_name
                 outgoing_data_copy = copy.deepcopy(self.active_state.outgoing_transition_data)
                 self.active_state = self.states[new_state_name]
                 self.active_state.incoming_transition_data = outgoing_data_copy
