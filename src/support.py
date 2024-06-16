@@ -6,8 +6,6 @@ from pygame.surface import Surface
 
 from src.screen import virtual_screen
 
-from .settings import HEIGHT_RATIO, WIDTH_RATIO
-
 
 def import_folder(path) -> list[Surface]:  # type: ignore
     sprite_list = []
@@ -19,21 +17,6 @@ def import_folder(path) -> list[Surface]:  # type: ignore
             content_surf = pygame.image.load(full_path).convert_alpha()
             sprite_list.append(content_surf)
     return sprite_list
-
-
-def handle_resize_event(event) -> tuple[float, float]:  # type: ignore
-    # Imports from .settings: WIDTH_RATIO, HEIGHT_RATIO
-
-    new_width = event.size[0]
-    new_height = event.size[1]
-
-    if (new_width / WIDTH_RATIO) != (new_height / HEIGHT_RATIO):
-        # Uses height to set new screen width:
-        new_width = new_height * (WIDTH_RATIO / HEIGHT_RATIO)
-
-    new_size = (new_width, new_height)
-
-    return new_size
 
 
 def handle_sprite_position(self) -> Any:  # type: ignore

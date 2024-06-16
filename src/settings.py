@@ -1,5 +1,12 @@
+import os
+
+SCALE = 1
+
 TILE_SIZE = 32
 HALF_TILE = TILE_SIZE / 2
 
 SCREEN_WIDTH = 16 * TILE_SIZE
 SCREEN_HEIGHT = 9 * TILE_SIZE
+
+
+ANTI_ALIASING = os.getenv("ANTI_ALIASING", "false").lower() == "true"
