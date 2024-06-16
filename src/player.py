@@ -173,6 +173,8 @@ class Player(pygame.sprite.Sprite):
 
             if 0 <= target_x < SCREEN_WIDTH and 0 <= target_y < SCREEN_HEIGHT:
                 new_tile_pos = (target_x * TILE_SIZE + HALF_TILE, target_y * TILE_SIZE + HALF_TILE)
+                if self.level is None:
+                    return
                 new_tile = Tile(self.level.all_tiles, new_tile_pos, "treated-sand")
                 self.level.all_tiles.add(new_tile)
 

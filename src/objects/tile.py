@@ -18,7 +18,7 @@ class Tile(pygame.sprite.Sprite):
     rect: Rect
     tile_type: str  # TODO: create child to make use of this
 
-    def __init__(self, group: Any, pos: tuple[int, int], name: str) -> None:
+    def __init__(self, group: Any, pos: tuple[float, float], name: str) -> None:
         super().__init__(group)
         self.pos = Vector2(pos)
         self.name = name
