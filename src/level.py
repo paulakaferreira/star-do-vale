@@ -6,7 +6,11 @@ import pygame
 from pygame.sprite import Group
 from pygame.surface import Surface
 
+<<<<<<< HEAD
 from src import support
+=======
+from src import settings, support
+>>>>>>> c63ba09 (fix: state transitions)
 from src.screen import virtual_screen
 
 from . import colors
@@ -75,5 +79,8 @@ class Level:
         virtual_screen.fill(colors.PASTEL_GREEN)
         sorted_sprites = handle_sprite_position(self.game)
 
+<<<<<<< HEAD
         self.all_tiles.draw(virtual_screen)
+=======
+>>>>>>> c63ba09 (fix: state transitions)
         sorted_sprites.draw(virtual_screen)

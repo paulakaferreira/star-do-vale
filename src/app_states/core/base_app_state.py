@@ -40,15 +40,21 @@ class BaseAppState:
 
     def run(self, time_delta: float) -> None:
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> c63ba09 (fix: state transitions)
         surface = virtual_screen
         for event in pygame.event.get():
             self.handle_event(event)
 
         self.ui_manager.update(time_delta)
         self.ui_manager.draw_ui(surface)
+<<<<<<< HEAD
 =======
         pass
 >>>>>>> 7d0aa93 (udpate: remove intermediate display and use pygame global)
+=======
+>>>>>>> c63ba09 (fix: state transitions)
 
     def handle_event(self, event: Event) -> None:
         if event.type == pygame.QUIT:

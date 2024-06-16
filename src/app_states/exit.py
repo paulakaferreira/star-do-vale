@@ -53,6 +53,7 @@ class ExitState(BaseAppState):
                 self.set_target_state_name(self.previous_state_name)
                 self.trigger_transition()
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
     def run(self, time_delta: float) -> None:
@@ -64,3 +65,5 @@ class ExitState(BaseAppState):
 
         self.ui_manager.draw_ui(surface)
 >>>>>>> 7d0aa93 (udpate: remove intermediate display and use pygame global)
+=======
+>>>>>>> c63ba09 (fix: state transitions)
