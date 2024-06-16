@@ -4,7 +4,7 @@ from typing import Any
 import pygame
 from pygame.surface import Surface
 
-from .settings import HEIGHT_RATIO, WIDTH_RATIO
+from src.screen import virtual_screen
 
 
 def import_folder(path) -> list[Surface]:  # type: ignore
@@ -19,23 +19,31 @@ def import_folder(path) -> list[Surface]:  # type: ignore
     return sprite_list
 
 
-def handle_resize_event(event) -> tuple[float, float]:  # type: ignore
-    # Imports from .settings: WIDTH_RATIO, HEIGHT_RATIO
-
-    new_width = event.size[0]
-    new_height = event.size[1]
-
-    if (new_width / WIDTH_RATIO) != (new_height / HEIGHT_RATIO):
-        # Uses height to set new screen width:
-        new_width = new_height * (WIDTH_RATIO / HEIGHT_RATIO)
-
-    new_size = (new_width, new_height)
-
-    return new_size
-
-
 def handle_sprite_position(self) -> Any:  # type: ignore
     sorted_sprites: Any = pygame.sprite.Group()
     for sprite in sorted(self.level.all_interactables.sprites(), key=lambda sprite: sprite.pos.y):
         sorted_sprites.add(sprite)
     return sorted_sprites
+
+
+def blit_centered(image: Surface) -> None:
+    surface = virtual_screen
+
+    surface_width, surface_height = surface.get_size()
+    image_width, image_height = image.get_size()
+
+    x = (surface_width - image_width) // 2
+    y = (surface_height - image_height) // 2
+
+    surface.blit(image, (x, y))
+
+
+def ratio_to_lefttop(ratio: tuple[float, float], width_height: tuple[float, float]) -> tuple[float, float]:
+    surface = virtual_screen
+    surface_width, surface_height = surface.get_size()
+    image_width, image_height = width_height
+
+    x = (surface_width - image_width) * ratio[0]
+    y = (surface_height - image_height) * ratio[1]
+
+    return (x, y)
