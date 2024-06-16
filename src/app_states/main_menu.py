@@ -33,6 +33,10 @@ class MainMenuState(BaseAppState):
 
     def start(self) -> None:
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        super().start()
+>>>>>>> 31798e7 (fix: copy previous virtual_screen and blit on state change)
         self.create_ui_elements()
 =======
         width_height = (150, 35)
@@ -54,6 +58,7 @@ class MainMenuState(BaseAppState):
 >>>>>>> 7d0aa93 (udpate: remove intermediate display and use pygame global)
 
     def end(self) -> None:
+        super().end()
         for element in self.ui_elements:
             element.kill()
 
@@ -91,13 +96,18 @@ class MainMenuState(BaseAppState):
 
     def run(self, time_delta: float) -> None:
 <<<<<<< HEAD
+<<<<<<< HEAD
         surface = virtual_screen
 =======
         surface = pygame.display.get_surface()
 
 >>>>>>> 7d0aa93 (udpate: remove intermediate display and use pygame global)
+=======
+>>>>>>> 31798e7 (fix: copy previous virtual_screen and blit on state change)
         for event in pygame.event.get():
             self.handle_event(event)
+
+        surface = virtual_screen
         self.ui_manager.update(time_delta)
 <<<<<<< HEAD
         blit_centered(self.background_image)

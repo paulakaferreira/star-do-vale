@@ -30,12 +30,6 @@ class GameState(BaseAppState):
         self.cur_level = level
 >>>>>>> 7d0aa93 (udpate: remove intermediate display and use pygame global)
 
-    def start(self) -> None:
-        pass
-
-    def end(self) -> None:
-        pass
-
     def handle_event(self, event: Event) -> None:
         super().handle_event(event)
 

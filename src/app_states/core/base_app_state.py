@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 import pygame
+from pygame import Surface
 from pygame.event import Event
 from pygame_gui import UIManager
 
@@ -24,6 +25,7 @@ class BaseAppState:
         self.time_to_quit_app = False
         self.ui_manager = ui_manager
         self.state_manager.register_state(self)
+        self.previous_virtual_screen: Surface | None = None
 
     def set_target_state_name(self, target_name: str) -> None:
         self.state_manager.states[target_name].previous_state_name = self.name
@@ -33,20 +35,26 @@ class BaseAppState:
         self.time_to_transition = True
 
     def start(self) -> None:
-        pass
+        self.previous_virtual_screen = virtual_screen.copy()
 
     def end(self) -> None:
-        pass
+        self.previous_virtual_screen = None
 
     def run(self, time_delta: float) -> None:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
 >>>>>>> c63ba09 (fix: state transitions)
         surface = virtual_screen
+=======
+>>>>>>> 31798e7 (fix: copy previous virtual_screen and blit on state change)
         for event in pygame.event.get():
             self.handle_event(event)
 
+        surface = virtual_screen
+        assert self.previous_virtual_screen is not None
+        surface.blit(self.previous_virtual_screen, (0, 0))
         self.ui_manager.update(time_delta)
         self.ui_manager.draw_ui(surface)
 <<<<<<< HEAD
