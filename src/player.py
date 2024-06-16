@@ -10,6 +10,8 @@ from pygame.surface import Surface
 from src import settings
 
 from .objects.collectable import Collectable
+from .objects.tile import Tile
+from .settings import SCREEN_HEIGHT, SCREEN_WIDTH, TILE_SIZE
 from .support import import_folder
 
 if TYPE_CHECKING:
@@ -61,6 +63,7 @@ class Player(pygame.sprite.Sprite):
         self.input()
         self.move(dt)
         self.animate(dt)
+        self.plant()
 
     def get_hitbox(self) -> Rect:
         return self.rect.scale_by(1 / 5, 1 / 10)
@@ -76,11 +79,11 @@ class Player(pygame.sprite.Sprite):
     def input(self) -> None:
         keys = pygame.key.get_pressed()
 
-        self.direction.y = 0
-        self.direction.x = 0
-
         if not self.status.endswith("_idle"):
             self.status += "_idle"
+
+        self.direction.y = 0
+        self.direction.x = 0
 
         if keys[pygame.K_LEFT]:
             self.status = "left"
@@ -152,6 +155,31 @@ class Player(pygame.sprite.Sprite):
                     self.inventory.append(collectable.collect())
                 else:
                     self.inventory_full_alert()
+
+    def plant(self) -> None:
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_1]:  # TODO: modify once actions are established
+            x_pos = self.pos.x
+            y_pos = self.pos.y
+
+            if self.status.startswith("left"):
+                x_pos -= TILE_SIZE / 2
+            elif self.status.startswith("right"):
+                x_pos += TILE_SIZE / 2
+            elif self.status.startswith("up"):
+                y_pos -= TILE_SIZE / 2
+            elif self.status.startswith("down"):
+                y_pos += TILE_SIZE  # the hitbox should start from the feet, not the sprite center
+
+            target_x = x_pos // TILE_SIZE + 0.5
+            target_y = y_pos // TILE_SIZE + 0.5
+
+            if 0 <= target_x < SCREEN_WIDTH and 0 <= target_y < SCREEN_HEIGHT:
+                new_tile_pos = (target_x * TILE_SIZE, target_y * TILE_SIZE)
+                if self.level is None:
+                    return
+                new_tile = Tile(self.level.all_tiles, new_tile_pos, "treated-sand")
+                self.level.all_tiles.add(new_tile)
 
     def inventory_full_alert(self) -> None:
         try:

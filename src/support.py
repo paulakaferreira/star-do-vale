@@ -36,6 +36,6 @@ def handle_resize_event(event) -> tuple[float, float]:  # type: ignore
 
 def handle_sprite_position(self) -> Any:  # type: ignore
     sorted_sprites: Any = pygame.sprite.Group()
-    for sprite in sorted(self.level.all_sprites.sprites(), key=lambda sprite: sprite.pos.y):
+    for sprite in sorted(self.level.all_interactables.sprites(), key=lambda sprite: sprite.pos.y):
         sorted_sprites.add(sprite)
     return sorted_sprites

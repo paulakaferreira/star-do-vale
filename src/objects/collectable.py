@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 import pygame
+from pygame.math import Vector2
 from pygame.rect import Rect
 from pygame.surface import Surface
 
@@ -18,7 +19,7 @@ class Collectable(pygame.sprite.Sprite):
 
     name: str
     price: int
-    pos: pygame.math.Vector2
+    pos: Vector2
     image: Surface
     rect: Rect
     obj_type: str
@@ -26,7 +27,7 @@ class Collectable(pygame.sprite.Sprite):
 
     def __init__(self, group: Any, pos: tuple[int, int], level: Level) -> None:
         super().__init__(group)
-        self.pos = pygame.math.Vector2(pos)
+        self.pos = Vector2(pos)
         img_path = f"graphics/fruit/{self.name}.png"
         self.image = pygame.image.load(img_path).convert_alpha()
         self.rect = self.image.get_rect(center=self.pos)
