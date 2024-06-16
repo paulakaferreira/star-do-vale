@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 import os
+=======
+TILE_SIZE = 32
+SCREEN_WIDTH = 16 * TILE_SIZE
+SCREEN_HEIGHT = 9 * TILE_SIZE
+>>>>>>> c6c84f8 (wip: fixed ui unscaling for mouse events)
 
 SCALE = 1
 

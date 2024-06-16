@@ -42,6 +42,7 @@ class Game:
             return unscaled_position  # type: ignore
 
         self.app_state_manager.ui_manager.calculate_scaled_mouse_position = calculate_scaled_mouse_position
+<<<<<<< HEAD
 =======
         ui_manager = UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.app_state_manager = AppStateManager(self)
@@ -50,6 +51,8 @@ class Game:
         ExitState(ui_manager, self.app_state_manager)
         self.app_state_manager.set_initial_state("main_menu")
 >>>>>>> 7d0aa93 (udpate: remove intermediate display and use pygame global)
+=======
+>>>>>>> c6c84f8 (wip: fixed ui unscaling for mouse events)
 
     def run(self) -> None:
         while self.running:
