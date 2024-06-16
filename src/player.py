@@ -11,8 +11,8 @@ from src import settings
 
 from .objects.collectable import Collectable
 from .objects.tile import Tile
+from .settings import HALF_TILE, SCREEN_HEIGHT, SCREEN_WIDTH, TILE_SIZE
 from .support import import_folder
-from .settings import SCREEN_HEIGHT, SCREEN_WIDTH, TILE_SIZE, HALF_TILE
 
 if TYPE_CHECKING:
     from .level import Level
@@ -81,7 +81,7 @@ class Player(pygame.sprite.Sprite):
 
         if not self.status.endswith("_idle"):
             self.status += "_idle"
-        
+
         self.direction.y = 0
         self.direction.x = 0
 
@@ -158,8 +158,7 @@ class Player(pygame.sprite.Sprite):
 
     def plant(self) -> None:
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_1]: # TODO: modify once actions are stablished
-
+        if keys[pygame.K_1]:  # TODO: modify once actions are stablished
             target_x = self.pos.x // TILE_SIZE
             target_y = self.pos.y // TILE_SIZE
 

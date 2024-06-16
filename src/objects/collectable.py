@@ -3,9 +3,9 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 import pygame
+from pygame.math import Vector2
 from pygame.rect import Rect
 from pygame.surface import Surface
-from pygame.math import Vector2
 
 if TYPE_CHECKING:
     from ..level import Level

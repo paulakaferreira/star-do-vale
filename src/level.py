@@ -6,15 +6,15 @@ import pygame
 from pygame.sprite import Group
 from pygame.surface import Surface
 
-from src import settings, support
+from src import support
 
 from . import colors
 from .objects.collectable import Acerola, Collectable, Jabuticaba, Jaca
 from .objects.obstacle import Obstacle
 from .objects.tile import Tile
 from .player import Player
-from .support import handle_sprite_position
 from .settings import SCREEN_HEIGHT, SCREEN_WIDTH
+from .support import handle_sprite_position
 
 if TYPE_CHECKING:
     from .main import Game

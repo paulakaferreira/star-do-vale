@@ -1,9 +1,9 @@
 from typing import Any
 
 import pygame
+from pygame.math import Vector2
 from pygame.rect import Rect
 from pygame.surface import Surface
-from pygame.math import Vector2
 
 
 class Tile(pygame.sprite.Sprite):
@@ -16,9 +16,9 @@ class Tile(pygame.sprite.Sprite):
     pos: Vector2
     image: Surface
     rect: Rect
-    tile_type: str # TODO: create child to make use of this
+    tile_type: str  # TODO: create child to make use of this
 
-    def __init__(self, group: Any, pos: tuple[int, int],  name: str) -> None:
+    def __init__(self, group: Any, pos: tuple[int, int], name: str) -> None:
         super().__init__(group)
         self.pos = Vector2(pos)
         self.name = name
