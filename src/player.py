@@ -11,7 +11,7 @@ from src import settings
 
 from .objects.collectable import Collectable
 from .objects.tile import Tile
-from .settings import HALF_TILE, SCREEN_HEIGHT, SCREEN_WIDTH, TILE_SIZE
+from .settings import SCREEN_HEIGHT, SCREEN_WIDTH, TILE_SIZE
 from .support import import_folder
 
 if TYPE_CHECKING:
@@ -158,21 +158,24 @@ class Player(pygame.sprite.Sprite):
 
     def plant(self) -> None:
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_1]:  # TODO: modify once actions are stablished
-            target_x = self.pos.x // TILE_SIZE
-            target_y = self.pos.y // TILE_SIZE
+        if keys[pygame.K_1]:  # TODO: modify once actions are established
+            x_pos = self.pos.x
+            y_pos = self.pos.y
 
-            if self.status == "left_idle":
-                target_x -= 1
-            elif self.status == "right_idle":
-                target_x += 1
-            elif self.status == "up_idle":
-                target_y -= 1
-            elif self.status == "down_idle":
-                target_y += 1
+            if self.status.startswith("left"):
+                x_pos -= TILE_SIZE / 2
+            elif self.status.startswith("right"):
+                x_pos += TILE_SIZE / 2
+            elif self.status.startswith("up"):
+                y_pos -= TILE_SIZE / 2
+            elif self.status.startswith("down"):
+                y_pos += TILE_SIZE  # the hitbox should start from the feet, not the sprite center
+
+            target_x = x_pos // TILE_SIZE + 0.5
+            target_y = y_pos // TILE_SIZE + 0.5
 
             if 0 <= target_x < SCREEN_WIDTH and 0 <= target_y < SCREEN_HEIGHT:
-                new_tile_pos = (target_x * TILE_SIZE + HALF_TILE, target_y * TILE_SIZE + HALF_TILE)
+                new_tile_pos = (target_x * TILE_SIZE, target_y * TILE_SIZE)
                 if self.level is None:
                     return
                 new_tile = Tile(self.level.all_tiles, new_tile_pos, "treated-sand")
