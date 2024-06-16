@@ -23,7 +23,6 @@ class GameState(BaseAppState):
         self.submenus = []
         self.submenus.append(Fishing())
 
-
     def set_level(self, level: Level) -> None:
         self.level = level
 
@@ -40,5 +39,10 @@ class GameState(BaseAppState):
 
     def run(self, time_delta: float) -> None:
         super().run(time_delta)
+
+        self.level.update_screen()
+        self.level.run(time_delta)
+        self.level.update_screen()
+
         for submenu in self.submenus:
             submenu.run(time_delta)

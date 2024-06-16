@@ -5,13 +5,11 @@ from typing import TYPE_CHECKING
 
 import pygame
 from pygame import Event
-from pygame.event import Event
 
 from src.screen import virtual_screen
 
 if TYPE_CHECKING:
     pass
-
 
 
 class Fishing:
@@ -88,7 +86,8 @@ class ProgressionBar(FishingElement):
         screen = virtual_screen
         self.fish = fish
         self.bobber = bobber
-        self.value: float = 25
+        self.initial_value: float = 25
+        self.value: float = self.initial_value
         self.max_value: float = 100
         self.width = 40
         self.height = screen.get_height() - 200  # Adjust the height as needed
@@ -126,6 +125,7 @@ class ProgressionBar(FishingElement):
         self.fish.show = False
         self.bobber.show = False
         self.show = False
+        self.value = self.initial_value
 
     def run(self, time_delta: float) -> None:
         surface = virtual_screen
@@ -189,7 +189,6 @@ class Bobber(FishingElement):
 
         if event.type == pygame.MOUSEBUTTONUP:
             self.reeling = False
-
 
     def reel(self, direction: float) -> None:
         self.speed -= direction * self.reel_acceleration
