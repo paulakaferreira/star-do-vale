@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import RESIZABLE
 
-from .settings import SCREEN_HEIGHT, SCREEN_WIDTH
+from .settings import ANTI_ALIASING, SCREEN_HEIGHT, SCREEN_WIDTH
 
 pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), RESIZABLE)
 
@@ -36,7 +36,10 @@ def get_transformation(
 def update_display(x_trans: tuple[float, float], y_trans: tuple[float, float]) -> None:
     (x_ratio, x_offset), (y_ratio, y_offset) = x_trans, y_trans
 
-    rescaled_screen = pygame.transform.smoothscale_by(virtual_screen, (x_ratio, y_ratio))
+    if ANTI_ALIASING:
+        rescaled_screen = pygame.transform.smoothscale_by(virtual_screen, (x_ratio, y_ratio))
+    else:
+        rescaled_screen = pygame.transform.scale_by(virtual_screen, (x_ratio, y_ratio))
 
     real_screen.fill((0, 0, 0))
 
