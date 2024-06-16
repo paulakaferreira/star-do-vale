@@ -15,9 +15,7 @@ if TYPE_CHECKING:
 
 class GameState(BaseAppState):
     def __init__(self, ui_manager: UIManager, state_manager: AppStateManager):
-        super().__init__("game", "main_menu", state_manager)
-
-        self.ui_manager = ui_manager
+        super().__init__("game", "main_menu", ui_manager, state_manager)
         self.level = Level(self.state_manager.game)
 
     def set_level(self, level: Level) -> None:

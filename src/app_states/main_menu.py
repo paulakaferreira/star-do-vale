@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 
 class MainMenuState(BaseAppState):
     def __init__(self, ui_manager: UIManager, state_manager: AppStateManager):
-        super().__init__("main_menu", "game", state_manager)
+        super().__init__("main_menu", "game", ui_manager, state_manager)
         self.ui_manager = ui_manager
         self.background_image = pygame.image.load("graphics/app_states/main_menu/background.png").convert()
         self.title_label: UILabel | None = None
@@ -57,13 +57,10 @@ class MainMenuState(BaseAppState):
         super().handle_event(event)
         self.ui_manager.process_events(event)
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
-            print("event ui")
             if event.ui_element == self.start_game_button:
-                print("start game")
                 self.set_target_state_name("game")
                 self.trigger_transition()
             elif event.ui_element == self.exit_game_button:
-                print("exit game")
                 self.set_target_state_name("exit")
                 self.trigger_transition()
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:

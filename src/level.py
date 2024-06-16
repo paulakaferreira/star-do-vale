@@ -7,6 +7,7 @@ from pygame.sprite import Group
 from pygame.surface import Surface
 
 from src import settings, support
+from src.screen import virtual_screen
 
 from . import colors
 from .objects.collectable import Acerola, Collectable, Jabuticaba, Jaca
@@ -56,7 +57,7 @@ class Level:
         self.all_sprites.update(dt)
 
     def update_screen(self) -> None:
-        pygame.display.get_surface().fill(colors.PASTEL_GREEN)
+        virtual_screen.fill(colors.PASTEL_GREEN)
         sorted_sprites = handle_sprite_position(self.game)
 
-        sorted_sprites.draw(pygame.display.get_surface())
+        sorted_sprites.draw(virtual_screen)
