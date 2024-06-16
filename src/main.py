@@ -2,7 +2,7 @@ import os
 
 import pygame
 
-from .screen import real_screen, update_display, virtual_screen
+from .screen import get_transformation, real_screen, update_display, virtual_screen
 
 
 class Game:
@@ -23,9 +23,15 @@ class Game:
         self.level = self.app_state_manager.states["game"].level  # type: ignore
 
     def update(self) -> None:
-        self.app_state_manager.ui_manager.set_window_resolution(real_screen.get_size())
-        self.app_state_manager.ui_manager.update(0)
-        update_display(virtual_screen, real_screen)
+        x_trans, y_trans = get_transformation(virtual_screen, real_screen)
+        update_display(x_trans, y_trans)
+
+        def calculate_scaled_mouse_position(position: tuple[int, int]) -> tuple[int, int]:
+            unscaled_position = ((position[0] - x_trans[1]) / x_trans[0], (position[1] - y_trans[1]) / y_trans[0])
+            # breakpoint()
+            return unscaled_position  # type: ignore
+
+        self.app_state_manager.ui_manager.calculate_scaled_mouse_position = calculate_scaled_mouse_position
 
     def run(self) -> None:
         while self.running:

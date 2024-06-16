@@ -9,7 +9,13 @@ real_screen = pygame.display.get_surface()
 virtual_screen = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 
-def update_display(virtual_screen: pygame.Surface, real_screen: pygame.Surface) -> None:
+def get_transformation(
+    virtual_screen: pygame.Surface,
+    real_screen: pygame.Surface,
+) -> tuple[tuple[float, float], tuple[float, float]]:
+    """
+    Update the display and return the ratio.
+    """
     window_width, window_height = real_screen.get_size()
     game_width, game_height = virtual_screen.get_size()
     aspect_ratio = game_width / game_height
@@ -24,11 +30,18 @@ def update_display(virtual_screen: pygame.Surface, real_screen: pygame.Surface) 
     x_offset = (window_width - new_width) // 2
     y_offset = (window_height - new_height) // 2
 
-    rescaled_screen = pygame.transform.smoothscale(virtual_screen, (new_width, new_height))
+    return (new_width / game_width, x_offset), ((new_height / game_height), y_offset)
+
+
+def update_display(x_trans: tuple[float, float], y_trans: tuple[float, float]) -> None:
+    (x_ratio, x_offset), (y_ratio, y_offset) = x_trans, y_trans
+
+    rescaled_screen = pygame.transform.smoothscale_by(virtual_screen, (x_ratio, y_ratio))
 
     real_screen.fill((0, 0, 0))
 
     real_screen.blit(rescaled_screen, (x_offset, y_offset))
+    # real_screen.blit(virtual_screen, (x_offset, y_offset))
 
     pygame.display.update()
 
