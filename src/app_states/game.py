@@ -21,12 +21,6 @@ class GameState(BaseAppState):
     def set_level(self, level: Level) -> None:
         self.level = level
 
-    def start(self) -> None:
-        pass
-
-    def end(self) -> None:
-        pass
-
     def handle_event(self, event: Event) -> None:
         super().handle_event(event)
 

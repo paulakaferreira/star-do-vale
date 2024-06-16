@@ -29,9 +29,11 @@ class MainMenuState(BaseAppState):
         self.ui_elements: list[UIButton] = []
 
     def start(self) -> None:
+        super().start()
         self.create_ui_elements()
 
     def end(self) -> None:
+        super().end()
         for element in self.ui_elements:
             element.kill()
 
@@ -68,9 +70,10 @@ class MainMenuState(BaseAppState):
             self.trigger_transition()
 
     def run(self, time_delta: float) -> None:
-        surface = virtual_screen
         for event in pygame.event.get():
             self.handle_event(event)
+
+        surface = virtual_screen
         self.ui_manager.update(time_delta)
         blit_centered(self.background_image)
         self.ui_manager.draw_ui(surface)
