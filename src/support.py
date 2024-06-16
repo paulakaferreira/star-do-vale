@@ -4,6 +4,8 @@ from typing import Any
 import pygame
 from pygame.surface import Surface
 
+from src.screen import virtual_screen
+
 from .settings import HEIGHT_RATIO, WIDTH_RATIO
 
 
@@ -41,18 +43,20 @@ def handle_sprite_position(self) -> Any:  # type: ignore
     return sorted_sprites
 
 
-def blit_centered(surface: Surface, image: Surface) -> None:
+def blit_centered(image: Surface) -> None:
+    surface = virtual_screen
+
     surface_width, surface_height = surface.get_size()
     image_width, image_height = image.get_size()
 
     x = (surface_width - image_width) // 2
     y = (surface_height - image_height) // 2
 
-    surface.blit(image, (x, y))  # draw the background
+    surface.blit(image, (x, y))
 
 
 def ratio_to_lefttop(ratio: tuple[float, float], width_height: tuple[float, float]) -> tuple[float, float]:
-    surface = pygame.display.get_surface()
+    surface = virtual_screen
     surface_width, surface_height = surface.get_size()
     image_width, image_height = width_height
 
