@@ -51,7 +51,7 @@ class FishingElement:
                 self.show = not self.show
                 self.reset()
 
-    def cap_position(self, pos_y: float) -> float:
+    def cap_position(self, pos_y: float, height: float = 0) -> float:
         if pos_y > self.max_position:
             pos_y = self.max_position
             self.speed = 0
@@ -89,11 +89,15 @@ class ProgressionBar(FishingElement):
         self.initial_value: float = 25
         self.value: float = self.initial_value
         self.max_value: float = 100
-        self.width = 40
-        self.height = screen.get_height() - 200  # Adjust the height as needed
+        self.width = 20
+        self.height = 200
+        self.x_offset = 40
         self.color = (0, 255, 0)  # Green color
         self.background_color = (255, 0, 0)  # Red color
-        self.pos = (screen.get_width() / 2 + self.width, 100)  # Adjust the position as needed
+        self.pos = (
+            screen.get_width() / 2 + self.x_offset,
+            (screen.get_height() - self.height) / 2,
+        )  # Adjust the position as needed
         self.rect = pygame.Rect(self.pos[0], self.pos[1], self.width, self.height)
         self.catch_speed = 10
         self.flee_speed = 10
@@ -165,7 +169,7 @@ class Bobber(FishingElement):
         self.sprite = pygame.image.load("graphics/menus/bobber/bobber.png").convert_alpha()
         self.reeling = False
         self.reel_acceleration: float = 1
-        self.reel_window = 100
+        self.reel_window: float = 40  # percentual of the catch bar
 
     def movement(self, time_delta: float) -> None:
         if self.reeling:
@@ -200,11 +204,21 @@ class Bobber(FishingElement):
     def run(self, time_delta: float) -> None:
         surface = virtual_screen
         if self.show:
-            filled_rect = pygame.Rect(
+            container_radius = 2
+            bobber_container = pygame.Rect(
+                self.pos[0] - container_radius,
+                self.min_position,
+                self.sprite.get_width() + 2 * container_radius,
+                self.max_position - self.min_position,
+            )
+
+            bobber_hitbox = pygame.Rect(
                 self.pos[0],
-                self.pos[1] + self.sprite.get_height() / 2 - self.reel_window / 2,
+                self.pos[1] + (self.sprite.get_height() - self.reel_window) / 2,
                 self.sprite.get_width(),
                 self.reel_window,
             )
-            pygame.draw.rect(surface, (50, 50, 50), filled_rect)
+
+            pygame.draw.rect(surface, (255, 0, 0), bobber_container, container_radius)
+            pygame.draw.rect(surface, (50, 50, 50), bobber_hitbox)
         super().run(time_delta)
