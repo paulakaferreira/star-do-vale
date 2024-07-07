@@ -21,12 +21,6 @@ class GameState(BaseAppState):
     def set_level(self, level: Level) -> None:
         self.level = level
 
-    def start(self) -> None:
-        pass
-
-    def end(self) -> None:
-        pass
-
     def handle_event(self, event: Event) -> None:
         super().handle_event(event)
 
@@ -40,6 +34,7 @@ class GameState(BaseAppState):
         for event in pygame.event.get():
             self.handle_event(event)
 
+        super().run(time_delta)
         self.level.update_screen()
         self.level.run(time_delta)
         self.level.update_screen()
