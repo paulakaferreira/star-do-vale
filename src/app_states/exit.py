@@ -22,6 +22,7 @@ class ExitState(BaseAppState):
         self.previous_state_name = "main_menu"
 
     def start(self) -> None:
+        super().start()
         width_height = (300, 200)
         left_top = ratio_to_lefttop((1 / 2, 7 / 8), width_height)
         self.exit_confirmation_dialog = UIConfirmationDialog(
@@ -32,6 +33,7 @@ class ExitState(BaseAppState):
         )
 
     def end(self) -> None:
+        super().end()
         self.exit_confirmation_dialog.kill()
 
     def handle_event(self, event: Event) -> None:

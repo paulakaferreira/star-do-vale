@@ -40,6 +40,7 @@ class GameState(BaseAppState):
         for event in pygame.event.get():
             self.handle_event(event)
 
+        super().run(time_delta)
         self.level.update_screen()
         self.level.run(time_delta)
         self.level.update_screen()
