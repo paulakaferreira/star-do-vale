@@ -29,17 +29,10 @@ class MainMenuState(BaseAppState):
         self.ui_elements: list[UIButton] = []
 
     def start(self) -> None:
-<<<<<<< HEAD
-        self.create_ui_elements()
-
-    def end(self) -> None:
-=======
-        super().start()
         self.create_ui_elements()
 
     def end(self) -> None:
         super().end()
->>>>>>> 868e4d6 (39-rebase)
         for element in self.ui_elements:
             element.kill()
 

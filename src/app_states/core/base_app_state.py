@@ -9,6 +9,8 @@ from pygame_gui import UIManager
 from src.screen import virtual_screen
 
 if TYPE_CHECKING:
+    from pygame.surface import Surface
+
     from .app_state_manager import AppStateManager
 
 
