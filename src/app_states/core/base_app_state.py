@@ -46,7 +46,6 @@ class BaseAppState:
         for event in pygame.event.get():
             self.handle_event(event)
 
-        surface = virtual_screen
         assert self.previous_virtual_screen is not None
         surface.blit(self.previous_virtual_screen, (0, 0))
         self.ui_manager.update(time_delta)

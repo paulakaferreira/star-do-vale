@@ -29,6 +29,7 @@ class MainMenuState(BaseAppState):
         self.ui_elements: list[UIButton] = []
 
     def start(self) -> None:
+        super().start()
         self.create_ui_elements()
 
     def end(self) -> None:
@@ -56,7 +57,9 @@ class MainMenuState(BaseAppState):
 
     def handle_event(self, event: Event) -> None:
         super().handle_event(event)
+
         self.ui_manager.process_events(event)
+
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
             if event.ui_element == self.start_game_button:
                 self.set_target_state_name("game")
@@ -73,7 +76,6 @@ class MainMenuState(BaseAppState):
         for event in pygame.event.get():
             self.handle_event(event)
 
-        surface = virtual_screen
         self.ui_manager.update(time_delta)
         blit_centered(self.background_image)
         self.ui_manager.draw_ui(surface)
