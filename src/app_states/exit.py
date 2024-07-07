@@ -8,6 +8,7 @@ from pygame.event import Event
 from pygame_gui import UIManager
 from pygame_gui.windows import UIConfirmationDialog
 
+from ..support import ratio_to_lefttop
 from .core.base_app_state import BaseAppState
 
 if TYPE_CHECKING:
@@ -16,14 +17,15 @@ if TYPE_CHECKING:
 
 class ExitState(BaseAppState):
     def __init__(self, ui_manager: UIManager, state_manager: AppStateManager):
-        super().__init__("exit", "main_menu", state_manager)
-        self.ui_manager = ui_manager
+        super().__init__("exit", "main_menu", ui_manager, state_manager)
         self.background_image = pygame.image.load("graphics/app_states/main_menu/background.png").convert()
         self.previous_state_name = "main_menu"
 
     def start(self) -> None:
+        width_height = (300, 200)
+        left_top = ratio_to_lefttop((1 / 2, 7 / 8), width_height)
         self.exit_confirmation_dialog = UIConfirmationDialog(
-            pygame.Rect((400, 350), (300, 200)),
+            pygame.Rect(left_top, width_height),
             "Do you want to exit the game?",
             self.ui_manager,
             blocking=False,
@@ -46,11 +48,3 @@ class ExitState(BaseAppState):
             if event.ui_element == self.exit_confirmation_dialog.close_window_button:
                 self.set_target_state_name(self.previous_state_name)
                 self.trigger_transition()
-
-    def run(self, surface: pygame.Surface, time_delta: float) -> None:
-        for event in pygame.event.get():
-            self.handle_event(event)
-
-        self.ui_manager.update(time_delta)
-
-        self.ui_manager.draw_ui(surface)
