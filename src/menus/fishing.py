@@ -216,13 +216,13 @@ class Bobber(FishingElement):
             self.speed = -self.max_speed
 
     def get_container_left(self) -> float:
-        return self.pos[0] - self.container_radius
+        return self.pos[0] - self.container_radius  # type: ignore
 
     def get_container_top(self) -> float:
         return self.min_position - self.reel_window / 2 - self.container_radius
 
     def get_container_width(self) -> float:
-        return self.sprite.get_width() + 2 * self.container_radius
+        return self.sprite.get_width() + 2 * self.container_radius  # type: ignore
 
     def get_container_height(self) -> float:
         return (self.max_position - self.min_position) + self.reel_window + 2 * self.container_radius
