@@ -171,14 +171,14 @@ class Player(pygame.sprite.Sprite):
             elif self.status.startswith("down"):
                 y_pos += TILE_SIZE  # the hitbox should start from the feet, not the sprite center
 
-            target_x = x_pos // TILE_SIZE + 0.5
-            target_y = y_pos // TILE_SIZE + 0.5
+            target_x: int = int(x_pos // TILE_SIZE)
+            target_y: int = int(y_pos // TILE_SIZE)
 
             if 0 <= target_x < SCREEN_WIDTH and 0 <= target_y < SCREEN_HEIGHT:
-                new_tile_pos = (target_x * TILE_SIZE, target_y * TILE_SIZE)
+                new_tile_pos = (target_x, target_y)
                 if self.level is None:
                     return
-                new_tile = Tile(self.level.all_tiles, new_tile_pos, "treated-sand")
+                new_tile = Tile(self.level.all_tiles, grid_pos=new_tile_pos, name="treated-sand")
                 self.level.all_tiles.add(new_tile)
 
     def inventory_full_alert(self) -> None:
