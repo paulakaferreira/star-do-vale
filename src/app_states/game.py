@@ -6,7 +6,7 @@ import pygame
 from pygame.event import Event
 from pygame_gui import UIManager
 
-from ..level import Level
+from ..levels.home import Level
 from .core.base_app_state import BaseAppState
 
 if TYPE_CHECKING:
@@ -39,11 +39,6 @@ class GameState(BaseAppState):
 
     def run(self, time_delta: float) -> None:
         super().run(time_delta)
-
-        if False:
-            # If I don't do this, keys are not available for the Player logic.
-            for event in pygame.event.get():
-                self.handle_event(event)
 
         self.level.update_screen()
         self.level.run(time_delta)

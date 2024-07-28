@@ -9,16 +9,16 @@ from pygame.surface import Surface
 from src import support
 from src.screen import virtual_screen
 
-from . import colors
-from .objects.collectable import Acerola, Collectable, Jabuticaba, Jaca
-from .objects.obstacle import Obstacle
-from .objects.tile import Tile
-from .player import Player
-from .settings import SCREEN_HEIGHT, SCREEN_WIDTH, TILE_SIZE
-from .support import handle_sprite_position
+from .. import colors
+from ..objects.collectable import Acerola, Collectable, Jabuticaba, Jaca
+from ..objects.obstacle import Obstacle
+from ..objects.tile import Tile
+from ..player import Player
+from ..settings import SCREEN_HEIGHT, SCREEN_WIDTH, TILE_SIZE
+from ..support import handle_sprite_position
 
 if TYPE_CHECKING:
-    from .main import Game
+    from ..main import Game
 
 
 def get_surfaces() -> dict[str, list[Surface]]:
@@ -64,7 +64,11 @@ class Level:
         self.collectables = [self.acerola, self.jabuticaba, self.jaca]
 
         # display tile
-        area = [(x, y) for x in range(0, SCREEN_WIDTH, 32) for y in range(0, SCREEN_HEIGHT, 32)]
+        area = [
+            (x, y)
+            for x in range(0, SCREEN_WIDTH + TILE_SIZE, TILE_SIZE)
+            for y in range(0, SCREEN_HEIGHT + TILE_SIZE, TILE_SIZE)
+        ]
         for pos in area:
             Tile(self.all_tiles, pos, name="basic-sand")
 
