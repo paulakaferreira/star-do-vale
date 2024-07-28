@@ -35,7 +35,8 @@ class Level:
     obstacles: list[Obstacle] = []
     tiles: dict[tuple[int, int], Tile]
 
-    def __init__(self, game: Game) -> None:
+    def __init__(self, level_name: str, game: Game) -> None:
+        self.level_name = level_name
         self.display_surface = pygame.display.get_surface()
         self.all_interactables: Group[Any] = Group()
         self.all_tiles: Group[Any] = Group()
@@ -72,7 +73,7 @@ class Level:
     def setup_tiles(self) -> None:
         self.tiles = {}
 
-        with Image.open("src/levels/home.png") as img:
+        with Image.open(f"src/levels/{self.level_name}.png") as img:
             # Get image dimensions
             width, height = img.size
             assert width == 16

@@ -15,7 +15,7 @@ from .settings import SCREEN_HEIGHT, SCREEN_WIDTH, TILE_SIZE
 from .support import import_folder
 
 if TYPE_CHECKING:
-    from .levels.home import Level
+    from .levels.level import Level
 
 MAX_INVENTORY_CAPACITY = 32
 

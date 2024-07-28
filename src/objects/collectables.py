@@ -11,7 +11,7 @@ from src.objects.animations import AnimatedSprite
 from src.settings import HALF_TILE, TILE_SIZE
 
 if TYPE_CHECKING:
-    from ..levels.home import Level
+    from ..levels.level import Level
     from ..player import Player
 
 

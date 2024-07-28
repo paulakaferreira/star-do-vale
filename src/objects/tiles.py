@@ -10,6 +10,7 @@ from src.settings import HALF_TILE, TILE_SIZE
 TILE_MAP = {
     (217, 160, 102): "basic-sand",
     (106, 190, 48): "leaf-soil",
+    (99, 155, 255): "water",
 }
 
 

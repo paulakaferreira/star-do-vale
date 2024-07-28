@@ -8,7 +8,6 @@ from .screen import get_transformation, real_screen, update_display, virtual_scr
 class Game:
     def __init__(self) -> None:
         from .app_states.core.app_state_manager import AppStateManager
-        from .editor import Editor
 
         pygame.init()
         os.environ["SDL_VIDEO_CENTERED"] = "1"
@@ -17,7 +16,7 @@ class Game:
         pygame.display.set_caption("Star do Vale")
         self.clock = pygame.time.Clock()
         self.running = True
-        self.editor = Editor(self)
+        # self.editor = Editor(self)
 
         self.app_state_manager = AppStateManager(self)
         self.level = self.app_state_manager.states["game"].level  # type: ignore
