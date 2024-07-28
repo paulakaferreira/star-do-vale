@@ -16,13 +16,14 @@ class Animation(Enum):
     IDLE = lambda t: (0, 0)  # noqa
     CIRCLE = lambda radius=32: lambda t: (radius * math.cos(t), radius * math.sin(t))  # noqa
     ERRATIC = lambda radius=32: lambda t: (randint(-radius, radius), randint(-radius, radius))  # noqa
+    BOB = lambda radius=2: lambda t: (0, radius * math.sin(8 * t))  # noqa
 
 
 class AnimatedSprite(Sprite):
     def __init__(
         self,
         *args: tuple[Any, ...],
-        animation_function: Animation = Animation.ERRATIC,
+        animation_function: Animation = Animation.BOB,
         **kwargs: dict[str, Any],
     ) -> None:
         super().__init__(*args, **kwargs)  # type: ignore
