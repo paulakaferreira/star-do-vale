@@ -32,6 +32,7 @@ def get_surfaces() -> dict[str, list[Surface]]:
 class Level:
     collectables: list[Collectable] = []
     obstacles: list[Obstacle] = []
+    tiles: dict[tuple[int, int], Tile]
 
     def __init__(self, game: Game) -> None:
         self.display_surface = pygame.display.get_surface()
@@ -52,25 +53,30 @@ class Level:
         )
         self.player.enter_level(self)
 
-        # add stump
+        self.setup_tiles()
+        self.setup_obstacles()
+        self.setup_collectables()
+
+    def setup_obstacles(self) -> None:
         stump_image = self.surfaces["stumps"][0]
         self.stump = Obstacle(self.all_interactables, (320, 100), stump_image)
         self.obstacles = [self.stump]
 
-        # add fruit
+    def setup_collectables(self) -> None:
         self.acerola = Acerola(self.all_interactables, (130, 30), self)
         self.jabuticaba = Jabuticaba(self.all_interactables, (70, 205), self)
         self.jaca = Jaca(self.all_interactables, (110, 150), self)
         self.collectables = [self.acerola, self.jabuticaba, self.jaca]
 
-        # display tile
+    def setup_tiles(self) -> None:
+        self.tiles = {}
         area = [
             (x, y)
             for x in range(0, SCREEN_WIDTH + TILE_SIZE, TILE_SIZE)
             for y in range(0, SCREEN_HEIGHT + TILE_SIZE, TILE_SIZE)
         ]
         for pos in area:
-            Tile(self.all_tiles, pos, name="basic-sand")
+            self.tiles[pos] = Tile(self.all_tiles, pos, name="basic-sand")
 
     def run(self, dt: float) -> None:
         self.all_interactables.update(dt)
