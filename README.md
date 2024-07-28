@@ -29,7 +29,7 @@ poetry --version
 Your poetry version should not be be below 1.2. Ideally, it should be above 1.5. Update your poetry version if needed. Try:
 
 ```shell
-poetry self update 1.5.1
+poetry self update 1.8.3
 ```
 
 ### 2. Check python version
@@ -38,10 +38,10 @@ poetry self update 1.5.1
 python --version
 ```
 
-Your python version should be above 3.11. If it's not, try updating it:
+Your python version should be above 3.12. If it's not, try updating it:
 
 ```shell
-sudo apt install python3.11
+sudo apt install python3.12-tk
 ```
 
 ### 3. Install dependencies

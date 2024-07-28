@@ -4,9 +4,10 @@ version = "0.1.0"
 description = ""
 authors = ["Paula <paulakaferreira@gmail.com>"]
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.12"
 pygame-gui = "0.6.9"
 pygame-ce = "^2.5.0"
 
