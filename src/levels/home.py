@@ -10,9 +10,9 @@ from src import support
 from src.screen import virtual_screen
 
 from .. import colors
-from ..objects.collectable import Acerola, Collectable, Jabuticaba, Jaca
-from ..objects.obstacle import Obstacle
-from ..objects.tile import Tile
+from ..objects.collectables import Acerola, Collectable, Jabuticaba, Jaca
+from ..objects.obstacles import Obstacle
+from ..objects.tiles import Tile
 from ..player import Player
 from ..settings import SCREEN_HEIGHT, SCREEN_WIDTH, TILE_SIZE
 from ..support import handle_sprite_position

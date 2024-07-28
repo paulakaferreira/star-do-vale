@@ -7,10 +7,10 @@ from pygame.math import Vector2
 from pygame.rect import Rect
 from pygame.surface import Surface
 
-from src.objects.animation import AnimatedSprite
+from src.objects.animations import AnimatedSprite
 
 if TYPE_CHECKING:
-    from ..level import Level
+    from ..levels.home import Level
     from ..player import Player
 
 

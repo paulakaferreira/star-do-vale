@@ -9,13 +9,13 @@ from pygame.surface import Surface
 
 from src import settings
 
-from .objects.collectable import Collectable
-from .objects.tile import Tile
+from .objects.collectables import Collectable
+from .objects.tiles import Tile
 from .settings import SCREEN_HEIGHT, SCREEN_WIDTH, TILE_SIZE
 from .support import import_folder
 
 if TYPE_CHECKING:
-    from .level import Level
+    from .levels.home import Level
 
 MAX_INVENTORY_CAPACITY = 32
 
