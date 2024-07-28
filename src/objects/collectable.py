@@ -7,12 +7,14 @@ from pygame.math import Vector2
 from pygame.rect import Rect
 from pygame.surface import Surface
 
+from src.objects.animation import AnimatedSprite
+
 if TYPE_CHECKING:
     from ..level import Level
     from ..player import Player
 
 
-class Collectable(pygame.sprite.Sprite):
+class Collectable(AnimatedSprite):
     """
     Disappears when touched by player.
     """
