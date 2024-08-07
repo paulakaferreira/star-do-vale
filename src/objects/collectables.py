@@ -7,10 +7,11 @@ from pygame.math import Vector2
 from pygame.rect import Rect
 from pygame.surface import Surface
 
-from src.objects.animation import AnimatedSprite
+from src.objects.animations import AnimatedSprite
+from src.settings import HALF_TILE, TILE_SIZE
 
 if TYPE_CHECKING:
-    from ..level import Level
+    from ..levels.level import Level
     from ..player import Player
 
 
@@ -27,8 +28,10 @@ class Collectable(AnimatedSprite):
     obj_type: str
     level: Level
 
-    def __init__(self, group: Any, pos: tuple[int, int], level: Level) -> None:
+    def __init__(self, group: Any, grid_pos: tuple[int, int], level: Level) -> None:
         super().__init__(group)
+        pos = grid_pos[0] * TILE_SIZE + HALF_TILE, grid_pos[1] * TILE_SIZE + HALF_TILE
+
         self.pos = Vector2(pos)
         img_path = f"graphics/fruit/{self.name}.png"
         self.image = pygame.image.load(img_path).convert_alpha()

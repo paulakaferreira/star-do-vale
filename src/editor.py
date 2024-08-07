@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from src import colors, settings
 
-from .level import Level
+from .levels.level import Level
 from .player import Player
 
 

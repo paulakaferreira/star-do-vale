@@ -6,7 +6,7 @@ import pygame
 from pygame.event import Event
 from pygame_gui import UIManager
 
-from ..level import Level
+from ..levels.level import Level
 from .core.base_app_state import BaseAppState
 
 if TYPE_CHECKING:
@@ -18,13 +18,22 @@ from src.menus.fishing import Fishing
 class GameState(BaseAppState):
     def __init__(self, ui_manager: UIManager, state_manager: AppStateManager):
         super().__init__("game", "main_menu", ui_manager, state_manager)
-        self.level = Level(self.state_manager.game)
-
+        self.setup_levels()
         self.submenus = []
         self.submenus.append(Fishing())
 
+    def setup_levels(self) -> None:
+        self.levels = {}
+        home = Level("home", self.state_manager.game)
+        lake = Level("lake", self.state_manager.game)
+        self.levels["home"] = home
+        self.levels["lake"] = lake
+        self.level = lake
+
     def set_level(self, level: Level) -> None:
         self.level = level
+        self.level.player.enter_level(self.level)
+        self.state_manager.game.level = level
 
     def handle_event(self, event: Event) -> None:
         super().handle_event(event)
@@ -34,16 +43,19 @@ class GameState(BaseAppState):
                 self.set_target_state_name("main_menu")
                 self.trigger_transition()
 
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_l:
+                self.set_level(self.levels["lake"])
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_h:
+                self.set_level(self.levels["home"])
+
         for submenu in self.submenus:
             submenu.handle_event(event)
 
     def run(self, time_delta: float) -> None:
         super().run(time_delta)
-
-        if False:
-            # If I don't do this, keys are not available for the Player logic.
-            for event in pygame.event.get():
-                self.handle_event(event)
 
         self.level.update_screen()
         self.level.run(time_delta)
