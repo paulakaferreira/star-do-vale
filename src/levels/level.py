@@ -11,17 +11,9 @@ from src import support
 from src.screen import virtual_screen
 
 from .. import colors
-<<<<<<<< HEAD:src/levels/level.py
 from ..objects.collectables import Acerola, Collectable, Jabuticaba, Jaca
 from ..objects.obstacles import Obstacle
 from ..objects.tiles import TILE_MAP, Tile
-========
-from ..objects.collectable import Acerola, Collectable, Jabuticaba, Jaca
-from ..objects.obstacle import Obstacle
-from ..objects.tile import Tile
->>>>>>>> 425436c (refactor: add levels folder):src/levels/home.py
-from ..player import Player
-from ..settings import SCREEN_HEIGHT, SCREEN_WIDTH, TILE_SIZE
 from ..support import handle_sprite_position
 
 if TYPE_CHECKING:
@@ -51,14 +43,7 @@ class Level:
         self.setup()
 
     def setup(self) -> None:
-        self.player = Player(
-            (
-                (SCREEN_WIDTH // 2 // TILE_SIZE) * TILE_SIZE + TILE_SIZE / 2,
-                (SCREEN_HEIGHT // 2 // TILE_SIZE) * TILE_SIZE + TILE_SIZE / 2,
-            ),
-            self.all_interactables,
-            "capybaba",
-        )
+        self.player = self.game.player
         self.player.enter_level(self)
 
         self.setup_tiles()
@@ -76,7 +61,6 @@ class Level:
         self.jaca = Jaca(self.all_interactables, (7, 5), self)
         self.collectables = [self.acerola, self.jabuticaba, self.jaca]
 
-<<<<<<<< HEAD:src/levels/level.py
     def setup_tiles(self) -> None:
         self.tiles = {}
 
@@ -94,16 +78,6 @@ class Level:
                 pixel = pixels[grid_pos]
                 name = TILE_MAP[pixel[:3]]
                 self.tiles[grid_pos] = Tile(self.all_tiles, grid_pos=grid_pos, name=name)
-========
-        # display tile
-        area = [
-            (x, y)
-            for x in range(0, SCREEN_WIDTH + TILE_SIZE, TILE_SIZE)
-            for y in range(0, SCREEN_HEIGHT + TILE_SIZE, TILE_SIZE)
-        ]
-        for pos in area:
-            Tile(self.all_tiles, pos, name="basic-sand")
->>>>>>>> 425436c (refactor: add levels folder):src/levels/home.py
 
     def run(self, dt: float) -> None:
         self.all_interactables.update(dt)

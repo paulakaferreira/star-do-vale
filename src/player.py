@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Any
 import pygame
 from pygame.math import Vector2
 from pygame.rect import Rect
+from pygame.sprite import Group
 from pygame.surface import Surface
 
 from src import settings
@@ -19,11 +20,15 @@ if TYPE_CHECKING:
 
 MAX_INVENTORY_CAPACITY = 32
 
+DEFAULT_PLAYER_X = (SCREEN_WIDTH // 2 // TILE_SIZE) * TILE_SIZE + TILE_SIZE / 2
+DEFAULT_PLAYER_Y = (SCREEN_HEIGHT // 2 // TILE_SIZE) * TILE_SIZE + TILE_SIZE / 2
+DEFAULT_PLAYER_POS = (DEFAULT_PLAYER_X, DEFAULT_PLAYER_Y)
+
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos: tuple[float, float], group: Any, sprites_folder: str) -> None:
-        super().__init__(group)
-
+    def __init__(self, sprites_folder: str, pos: tuple[float, float] = DEFAULT_PLAYER_POS) -> None:
+        _dummy_group: Group[Any] = Group()
+        super().__init__(_dummy_group)
         # Initialize animations
         self.sprites_folder = sprites_folder
         self.animations: dict[str, list[Surface]] = {
@@ -70,6 +75,7 @@ class Player(pygame.sprite.Sprite):
 
     def enter_level(self, level: Level) -> None:
         self.level = level
+        self.add(self.level.all_interactables)
 
     def import_assets(self) -> None:
         for key in self.animations.keys():

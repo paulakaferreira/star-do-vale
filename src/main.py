@@ -2,6 +2,7 @@ import os
 
 import pygame
 
+from .player import Player
 from .screen import get_transformation, real_screen, update_display, virtual_screen
 
 
@@ -18,6 +19,7 @@ class Game:
         self.running = True
         # self.editor = Editor(self)
 
+        self.player = Player("capybaba")
         self.app_state_manager = AppStateManager(self)
         self.level = self.app_state_manager.states["game"].level  # type: ignore
 

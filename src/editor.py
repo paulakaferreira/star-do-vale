@@ -1,16 +1,13 @@
 from __future__ import annotations
 
-from src import colors, settings
+from src import colors
 
 from .levels.level import Level
-from .player import Player
 
 
 class Editor(Level):
     def setup(self) -> None:
-        self.player = Player(
-            (settings.SCREEN_WIDTH // 2, settings.SCREEN_HEIGHT // 2), self.all_interactables, "capybaba"
-        )
+        self.player = self.game.player
         self.player.enter_level(self)
 
     def run(self, dt: float) -> None:
