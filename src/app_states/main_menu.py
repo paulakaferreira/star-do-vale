@@ -63,13 +63,10 @@ class MainMenuState(BaseAppState):
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
             if event.ui_element == self.start_game_button:
                 self.set_target_state_name("game")
-                self.trigger_transition()
             elif event.ui_element == self.exit_game_button:
                 self.set_target_state_name("exit")
-                self.trigger_transition()
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             self.set_target_state_name("exit")
-            self.trigger_transition()
 
     def run(self, time_delta: float) -> None:
         surface = virtual_screen

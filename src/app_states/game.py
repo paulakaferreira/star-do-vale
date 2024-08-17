@@ -40,8 +40,7 @@ class GameState(BaseAppState):
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
-                self.set_target_state_name("main_menu")
-                self.trigger_transition()
+                self.set_target_state_name("exit")
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_l:

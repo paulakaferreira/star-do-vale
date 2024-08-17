@@ -34,10 +34,29 @@ class Game:
 
         self.app_state_manager.ui_manager.calculate_scaled_mouse_position = calculate_scaled_mouse_position
 
+    def run_debug(self) -> None:
+        surface = virtual_screen
+        font = pygame.font.SysFont("Comic Sans", 18)
+        black = (0, 0, 0)
+        current_state_name = self.app_state_manager.active_state.name if self.app_state_manager.active_state else "?"
+        previous_state_name = (
+            self.app_state_manager.previous_state.name if self.app_state_manager.previous_state else "?"
+        )
+        state_display = font.render(
+            f"Game State: {current_state_name}\n" f"Previous State: {previous_state_name}",
+            True,
+            black,
+        )
+        surface.blit(state_display, (10, 10))
+
     def run(self) -> None:
         while self.running:
             dt = self.clock.tick(60) / 1000
             self.running = self.app_state_manager.run(dt)
+
+            # debug
+            self.run_debug()
+
             self.update()
         pygame.quit()
 
