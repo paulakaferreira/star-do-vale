@@ -5,13 +5,14 @@ from typing import TYPE_CHECKING, Any
 import pygame
 from pygame.math import Vector2
 from pygame.rect import Rect
+from pygame.sprite import Group
 from pygame.surface import Surface
 
 from src import settings
 
 from .objects.collectables import Collectable
 from .objects.tiles import Tile
-from .settings import SCREEN_HEIGHT, SCREEN_WIDTH, TILE_SIZE
+from .settings import GRID_COLS, GRID_ROWS, SCREEN_HEIGHT, SCREEN_WIDTH, TILE_SIZE
 from .support import import_folder
 
 if TYPE_CHECKING:
@@ -19,11 +20,16 @@ if TYPE_CHECKING:
 
 MAX_INVENTORY_CAPACITY = 32
 
+DEFAULT_PLAYER_POS = (
+    (GRID_COLS // 2) * TILE_SIZE,
+    (GRID_ROWS // 2) * TILE_SIZE,
+)
+
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos: tuple[float, float], group: Any, sprites_folder: str) -> None:
-        super().__init__(group)
-
+    def __init__(self, sprites_folder: str, pos: tuple[float, float] = DEFAULT_PLAYER_POS) -> None:
+        _dummy_group: Group[Any] = Group()
+        super().__init__(_dummy_group)
         # Initialize animations
         self.sprites_folder = sprites_folder
         self.animations: dict[str, list[Surface]] = {
@@ -70,6 +76,7 @@ class Player(pygame.sprite.Sprite):
 
     def enter_level(self, level: Level) -> None:
         self.level = level
+        self.add(self.level.all_interactables)
 
     def import_assets(self) -> None:
         for key in self.animations.keys():

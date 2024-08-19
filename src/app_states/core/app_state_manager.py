@@ -30,6 +30,18 @@ class AppStateManager:
 
         self.set_initial_state("main_menu")
 
+    @property
+    def active_state_name(self) -> str | None:
+        if self.active_state:
+            return self.active_state.name
+        return None
+
+    @property
+    def previous_state_name(self) -> str | None:
+        if self.previous_state:
+            return self.previous_state.name
+        return None
+
     def register_state(self, state: BaseAppState) -> None:
         if state.name not in self.states:
             self.states[state.name] = state

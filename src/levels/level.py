@@ -14,8 +14,6 @@ from .. import colors
 from ..objects.collectables import Acerola, Collectable, Jabuticaba, Jaca
 from ..objects.obstacles import Obstacle
 from ..objects.tiles import TILE_MAP, Tile
-from ..player import Player
-from ..settings import SCREEN_HEIGHT, SCREEN_WIDTH, TILE_SIZE
 from ..support import handle_sprite_position
 
 if TYPE_CHECKING:
@@ -45,14 +43,7 @@ class Level:
         self.setup()
 
     def setup(self) -> None:
-        self.player = Player(
-            (
-                (SCREEN_WIDTH // 2 // TILE_SIZE) * TILE_SIZE + TILE_SIZE / 2,
-                (SCREEN_HEIGHT // 2 // TILE_SIZE) * TILE_SIZE + TILE_SIZE / 2,
-            ),
-            self.all_interactables,
-            "capybaba",
-        )
+        self.player = self.game.player
         self.player.enter_level(self)
 
         self.setup_tiles()

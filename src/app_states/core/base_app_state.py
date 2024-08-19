@@ -29,8 +29,11 @@ class BaseAppState:
         self.previous_virtual_screen: Surface | None = None
 
     def set_target_state_name(self, target_name: str) -> None:
+        if self.state_manager.active_state and target_name == self.state_manager.active_state.name:
+            return
         self.state_manager.states[target_name].previous_state_name = self.name
         self.target_state_name = target_name
+        self.trigger_transition()
 
     def trigger_transition(self) -> None:
         self.time_to_transition = True
@@ -54,4 +57,3 @@ class BaseAppState:
     def handle_event(self, event: Event) -> None:
         if event.type == pygame.QUIT:
             self.set_target_state_name("exit")
-            self.trigger_transition()
