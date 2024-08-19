@@ -183,7 +183,6 @@ class Bobber(FishingElement):
     def __init__(self, *args, **kwargs):  # type: ignore
         super().__init__(*args, **kwargs)
         self.sprite = pygame.image.load("graphics/menus/bobber/bobber.png").convert_alpha()
-        self.reeling = False
         self.reel_window: float = 40  # percentual of the catch bar
         self.container_radius = 2
         self.friction_rate = 0.02
@@ -191,6 +190,18 @@ class Bobber(FishingElement):
         self.max_speed: float = 200
         self.reel_acceleration: float = 4
         self.buoyancy: float = 4
+        self.set_reeling()
+
+    def reset(self) -> None:
+        super().reset()
+        self.set_reeling()
+
+    def set_reeling(self) -> None:
+        mouse_buttons = pygame.mouse.get_pressed()
+        if mouse_buttons[0]:
+            self.reeling = True
+        else:
+            self.reeling = False
 
     def reel(self, direction: float) -> None:
         self.speed -= direction * self.reel_acceleration

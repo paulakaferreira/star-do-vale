@@ -41,7 +41,7 @@ class Game:
         self.app_state_manager.ui_manager.calculate_scaled_mouse_position = calculate_scaled_mouse_position
 
     def run_debug(self) -> None:
-        font = pygame.font.SysFont("Comic Sans", 18)
+        font = pygame.font.SysFont(name=None, size=18)
         black = (0, 0, 0)
         current_state_name = self.app_state_manager.active_state.name if self.app_state_manager.active_state else "?"
         previous_state_name = (

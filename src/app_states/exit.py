@@ -50,3 +50,7 @@ class ExitState(BaseAppState):
             if event.ui_element == self.exit_confirmation_dialog.close_window_button:
                 self.set_target_state_name(self.previous_state_name)
                 self.trigger_transition()
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                self.set_target_state_name(self.previous_state_name)
