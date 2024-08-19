@@ -12,7 +12,7 @@ from src import settings
 
 from .objects.collectables import Collectable
 from .objects.tiles import Tile
-from .settings import GRID_COLS, GRID_ROWS, SCREEN_HEIGHT, SCREEN_WIDTH, TILE_SIZE
+from .settings import GRID_HEIGHT, GRID_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH, TILE_SIZE
 from .support import import_folder
 
 if TYPE_CHECKING:
@@ -21,8 +21,8 @@ if TYPE_CHECKING:
 MAX_INVENTORY_CAPACITY = 32
 
 DEFAULT_PLAYER_POS = (
-    (GRID_COLS // 2) * TILE_SIZE,
-    (GRID_ROWS // 2) * TILE_SIZE,
+    (GRID_WIDTH // 2) * TILE_SIZE,
+    (GRID_HEIGHT // 2) * TILE_SIZE,
 )
 
 
@@ -129,7 +129,7 @@ class Player(pygame.sprite.Sprite):
         return bool(pos.x <= (settings.SCREEN_WIDTH - 30) and (pos.x >= 30))
 
     def check_vertical_move(self, pos: Vector2) -> bool:
-        return bool(pos.y <= (settings.SCREEN_HEIGHT - 40) and (pos.y >= 30))
+        return bool(pos.y <= (settings.SCREEN_HEIGHT - 40) and (pos.y >= 40))
 
     def move(self, dt: float) -> None:
         new_pos = self.predict_position(dt)

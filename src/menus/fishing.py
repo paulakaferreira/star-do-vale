@@ -16,7 +16,7 @@ class Fishing:
     def __init__(self) -> None:
         self.fish = Fish()  # type: ignore
         self.bobber = Bobber()  # type: ignore
-        self.progression_bar = ProgressionBar(self.fish, self.bobber)
+        self.progression_bar = ProgressBar(self.fish, self.bobber)
 
     def handle_event(self, event: Event) -> None:
         self.progression_bar.handle_event(event)
@@ -37,9 +37,9 @@ class FishingElement:
         self.pos = self.initial_pos
         self.show = False
         self.speed: float = 0
-        self.max_speed: float = 6
-        self.reel_acceleration: float = 2
-        self.buoyancy: float = 0.25
+        self.max_speed: float = 200
+        self.reel_acceleration: float = 5
+        self.buoyancy: float = 2
         self.height = 100
         self.min_position: float = (screen.get_height() - self.height) / 2
         self.max_position: float = (screen.get_height() + self.height) / 2
@@ -63,7 +63,7 @@ class FishingElement:
 
     def update_position(self, time_delta: float) -> None:
         pos = self.pos
-        dy = self.speed  # self.speed * time_delta
+        dy = self.speed * time_delta
         if dy:
             self.pos = (pos[0], self.cap_position(pos[1] + dy))
 
@@ -85,7 +85,7 @@ class FishingElement:
         self.speed = 0
 
 
-class ProgressionBar(FishingElement):
+class ProgressBar(FishingElement):
     def __init__(self, fish: Fish, bobber: Bobber) -> None:
         super().__init__()
         screen = virtual_screen
@@ -115,25 +115,27 @@ class ProgressionBar(FishingElement):
         self.flee_speed = 10
 
     def reset(self) -> None:
-        pass
+        self.value = self.initial_value
+        self.flawless = True
 
     def evaluate_progress(self, time_delta: float) -> None:
         if abs(self.bobber.pos[1] - self.fish.pos[1]) < (self.bobber.reel_window + self.fish.sprite.get_height()) / 2:
             self.value += self.catch_speed * time_delta
         else:
             self.value -= self.flee_speed * time_delta
+            self.flawless = False
         if self.value < 0:
             self.value = 0
         if self.value > self.max_value:
             self.value = self.max_value
 
-        if self.value == self.max_value:
-            self.finish(success=True)
+        if self.value in (0, self.max_value):
+            self.finish()
 
-        if self.value == 0:
-            self.finish(success=False)
-
-    def finish(self, success: bool) -> None:
+    def finish(self) -> None:
+        success = self.value == self.max_value
+        if self.flawless:
+            print("FLAWLESS VICTORY")
         if success:
             print("Fishing: 🐟 Ganhou um peixe!")
         else:
@@ -161,15 +163,16 @@ class Fish(FishingElement):
     def __init__(self, *args, **kwargs):  # type: ignore
         super().__init__(*args, **kwargs)
         self.sprite = pygame.image.load("graphics/menus/bobber/fish.png").convert_alpha()
+        self.max_speed: int = 100
 
     def movement(self, time_delta: float) -> None:
         if not hasattr(self, "change_behavior_countdown"):
             self.change_behavior_countdown = random.randint(20, 40)
-            self.speed = random.randint(-4, 4)
+            self.speed = random.randint(-self.max_speed, self.max_speed)
 
         if self.change_behavior_countdown == 0:
             self.change_behavior_countdown = random.randint(20, 40)
-            self.speed = random.randint(-4, 4)
+            self.speed = random.randint(-self.max_speed, self.max_speed)
 
         self.change_behavior_countdown -= 1
 
@@ -181,32 +184,13 @@ class Bobber(FishingElement):
         super().__init__(*args, **kwargs)
         self.sprite = pygame.image.load("graphics/menus/bobber/bobber.png").convert_alpha()
         self.reeling = False
-        self.reel_acceleration: float = 1
         self.reel_window: float = 40  # percentual of the catch bar
         self.container_radius = 2
+        self.friction_rate = 0.02
 
-    def movement(self, time_delta: float) -> None:
-        if self.reeling:
-            self.reel(+1)
-
-        self.speed += self.buoyancy
-
-        self.speed *= 0.95
-
-        if abs(self.speed) > 0.1:
-            self.update_position(time_delta)
-
-    def handle_event(self, event: Event) -> None:
-        super().handle_event(event)
-
-        if event.type == pygame.MOUSEWHEEL:
-            self.reel(event.precise_y)
-
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            self.reeling = True
-
-        if event.type == pygame.MOUSEBUTTONUP:
-            self.reeling = False
+        self.max_speed: float = 200
+        self.reel_acceleration: float = 4
+        self.buoyancy: float = 4
 
     def reel(self, direction: float) -> None:
         self.speed -= direction * self.reel_acceleration
@@ -214,6 +198,26 @@ class Bobber(FishingElement):
             self.speed = self.max_speed
         if self.speed < -self.max_speed:
             self.speed = -self.max_speed
+
+    def movement(self, time_delta: float) -> None:
+        if self.reeling:
+            self.reel(1)
+        else:
+            self.speed += self.buoyancy
+
+        self.speed *= 1 - self.friction_rate
+
+        if abs(self.speed) > 0.1:
+            self.update_position(time_delta)
+
+    def handle_event(self, event: Event) -> None:
+        super().handle_event(event)
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            self.reeling = True
+
+        if event.type == pygame.MOUSEBUTTONUP:
+            self.reeling = False
 
     def get_container_left(self) -> float:
         return self.pos[0] - self.container_radius

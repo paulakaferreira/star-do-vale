@@ -19,8 +19,8 @@ class GameState(BaseAppState):
     def __init__(self, ui_manager: UIManager, state_manager: AppStateManager):
         super().__init__("game", "main_menu", ui_manager, state_manager)
         self.setup_levels()
-        self.submenus = []
-        self.submenus.append(Fishing())
+        self.overlays = []
+        self.overlays.append(Fishing())
 
     def setup_levels(self) -> None:
         self.levels = {}
@@ -50,8 +50,8 @@ class GameState(BaseAppState):
             if event.key == pygame.K_h:
                 self.set_level(self.levels["home"])
 
-        for submenu in self.submenus:
-            submenu.handle_event(event)
+        for overlay in self.overlays:
+            overlay.handle_event(event)
 
     def run(self, time_delta: float) -> None:
         super().run(time_delta)
@@ -60,5 +60,5 @@ class GameState(BaseAppState):
         self.level.run(time_delta)
         self.level.update_screen()
 
-        for submenu in self.submenus:
-            submenu.run(time_delta)
+        for overlay in self.overlays:
+            overlay.run(time_delta)

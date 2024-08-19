@@ -5,6 +5,7 @@ import pygame
 from .debug import grid_surface
 from .player import Player
 from .screen import get_transformation, real_screen, update_display, virtual_screen
+from .settings import DEFAULT_FPS
 
 
 class Game:
@@ -29,14 +30,18 @@ class Game:
         update_display(x_trans, y_trans)
 
         def calculate_scaled_mouse_position(position: tuple[int, int]) -> tuple[int, int]:
-            unscaled_position = ((position[0] - x_trans[1]) / x_trans[0], (position[1] - y_trans[1]) / y_trans[0])
-            # breakpoint()
-            return unscaled_position  # type: ignore
+            if y_trans[0] and x_trans[0]:
+                unscaled_position = (
+                    (position[0] - x_trans[1]) / x_trans[0],
+                    (position[1] - y_trans[1]) / y_trans[0],
+                )
+                return unscaled_position  # type: ignore
+            return (0, 0)
 
         self.app_state_manager.ui_manager.calculate_scaled_mouse_position = calculate_scaled_mouse_position
 
     def run_debug(self) -> None:
-        font = pygame.font.SysFont("Comic Sans", 18)
+        font = pygame.font.SysFont(name=None, size=18)
         black = (0, 0, 0)
         current_state_name = self.app_state_manager.active_state.name if self.app_state_manager.active_state else "?"
         previous_state_name = (
@@ -50,12 +55,20 @@ class Game:
 
         virtual_screen.blit(state_display, (10, 10))
 
+        fps = int(self.clock.get_fps())
+        fps_text = font.render(
+            f"FPS: {fps}",
+            antialias=True,
+            color=black,
+        )
+        virtual_screen.blit(fps_text, (450, 10))
+
         if self.app_state_manager.active_state_name == "game":
             virtual_screen.blit(grid_surface, (0, 0))
 
     def run(self) -> None:
         while self.running:
-            dt = self.clock.tick(60) / 1000
+            dt = self.clock.tick(DEFAULT_FPS) / 1000
             self.running = self.app_state_manager.run(dt)
 
             # debug
