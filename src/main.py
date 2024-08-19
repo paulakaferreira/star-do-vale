@@ -47,7 +47,7 @@ class Game:
             antialias=True,
             color=black,
         )
-        surface.blit(state_display, (10, 10))
+        virtual_screen.blit(state_display, (10, 10))
 
     def run(self) -> None:
         while self.running:
