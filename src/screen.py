@@ -17,8 +17,8 @@ def get_transformation(
     Update the display and return the ratio.
     """
     window_width, window_height = real_screen.get_size()
-    SCREEN_WIDTH, SCREEN_HEIGHT = virtual_screen.get_size()
-    aspect_ratio = SCREEN_WIDTH / SCREEN_HEIGHT
+    screen_width, screen_height = virtual_screen.get_size()
+    aspect_ratio = screen_width / screen_height
 
     if window_width / window_height > aspect_ratio:
         new_height = window_height
@@ -30,7 +30,7 @@ def get_transformation(
     x_offset = (window_width - new_width) // 2
     y_offset = (window_height - new_height) // 2
 
-    return (new_width / SCREEN_WIDTH, x_offset), ((new_height / SCREEN_HEIGHT), y_offset)
+    return (new_width / screen_width, x_offset), (new_height / screen_height, y_offset)
 
 
 def update_display(x_trans: tuple[float, float], y_trans: tuple[float, float]) -> None:
