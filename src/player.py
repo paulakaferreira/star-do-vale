@@ -12,7 +12,7 @@ from src import settings
 
 from .objects.collectables import Collectable
 from .objects.tiles import Tile
-from .settings import GRID_COLS, GRID_ROWS, TILE_SIZE
+from .settings import GRID_HEIGHT, GRID_WIDTH, TILE_SIZE
 from .support import import_folder
 
 if TYPE_CHECKING:
@@ -21,8 +21,8 @@ if TYPE_CHECKING:
 MAX_INVENTORY_CAPACITY = 32
 
 DEFAULT_PLAYER_POS = (
-    (GRID_COLS // 2) * TILE_SIZE,
-    (GRID_ROWS // 2) * TILE_SIZE,
+    (GRID_WIDTH // 2) * TILE_SIZE,
+    (GRID_HEIGHT // 2) * TILE_SIZE,
 )
 
 
@@ -126,10 +126,10 @@ class Player(pygame.sprite.Sprite):
         return hitbox
 
     def check_horizontal_move(self, pos: Vector2) -> bool:
-        return bool(pos.x <= (settings.GAME_WIDTH - 30) and (pos.x >= 30))
+        return bool(pos.x <= (settings.SCREEN_WIDTH - 30) and (pos.x >= 30))
 
     def check_vertical_move(self, pos: Vector2) -> bool:
-        return bool(pos.y <= (settings.GAME_HEIGHT - 40) and (pos.y >= 30))
+        return bool(pos.y <= (settings.SCREEN_HEIGHT - 40) and (pos.y >= 40))
 
     def move(self, dt: float) -> None:
         new_pos = self.predict_position(dt)
@@ -181,7 +181,7 @@ class Player(pygame.sprite.Sprite):
             target_x: int = int(x_pos // TILE_SIZE)
             target_y: int = int(y_pos // TILE_SIZE)
 
-            if 0 <= target_x < GAME_WIDTH and 0 <= target_y < GAME_HEIGHT:
+            if 0 <= target_x < SCREEN_WIDTH and 0 <= target_y < SCREEN_HEIGHT:
                 new_tile_pos = (target_x, target_y)
                 if self.level is None:
                     return

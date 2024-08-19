@@ -1,12 +1,12 @@
 import pygame
 from pygame.locals import RESIZABLE
 
-from .settings import ANTI_ALIASING, GAME_HEIGHT, GAME_WIDTH
+from .settings import ANTI_ALIASING, SCREEN_HEIGHT, SCREEN_WIDTH
 
-pygame.display.set_mode((GAME_WIDTH, GAME_HEIGHT), RESIZABLE)
+pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), RESIZABLE)
 
 real_screen = pygame.display.get_surface()
-virtual_screen = pygame.Surface((GAME_WIDTH, GAME_HEIGHT))
+virtual_screen = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 
 def get_transformation(
@@ -17,8 +17,8 @@ def get_transformation(
     Update the display and return the ratio.
     """
     window_width, window_height = real_screen.get_size()
-    game_width, game_height = virtual_screen.get_size()
-    aspect_ratio = game_width / game_height
+    SCREEN_WIDTH, SCREEN_HEIGHT = virtual_screen.get_size()
+    aspect_ratio = SCREEN_WIDTH / SCREEN_HEIGHT
 
     if window_width / window_height > aspect_ratio:
         new_height = window_height
@@ -30,7 +30,7 @@ def get_transformation(
     x_offset = (window_width - new_width) // 2
     y_offset = (window_height - new_height) // 2
 
-    return (new_width / game_width, x_offset), ((new_height / game_height), y_offset)
+    return (new_width / SCREEN_WIDTH, x_offset), ((new_height / SCREEN_HEIGHT), y_offset)
 
 
 def update_display(x_trans: tuple[float, float], y_trans: tuple[float, float]) -> None:
