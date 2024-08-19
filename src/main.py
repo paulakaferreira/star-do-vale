@@ -41,7 +41,7 @@ class Game:
         self.app_state_manager.ui_manager.calculate_scaled_mouse_position = calculate_scaled_mouse_position
 
     def run_debug(self) -> None:
-        font = pygame.font.SysFont("Comic Sans", 18)
+        font = pygame.font.SysFont(name=None, size=18)
         black = (0, 0, 0)
         current_state_name = self.app_state_manager.active_state.name if self.app_state_manager.active_state else "?"
         previous_state_name = (
@@ -56,7 +56,11 @@ class Game:
         virtual_screen.blit(state_display, (10, 10))
 
         fps = int(self.clock.get_fps())
-        fps_text = font.render(f"FPS: {fps}", True, black)
+        fps_text = font.render(
+            f"FPS: {fps}",
+            antialias=True,
+            color=black,
+        )
         virtual_screen.blit(fps_text, (450, 10))
 
         if self.app_state_manager.active_state_name == "game":
