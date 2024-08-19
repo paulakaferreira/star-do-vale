@@ -2,6 +2,7 @@ import os
 
 import pygame
 
+from .debug import grid_surface
 from .player import Player
 from .screen import get_transformation, real_screen, update_display, virtual_screen
 
@@ -46,7 +47,11 @@ class Game:
             antialias=True,
             color=black,
         )
+
         virtual_screen.blit(state_display, (10, 10))
+
+        if self.app_state_manager.active_state_name == "game":
+            virtual_screen.blit(grid_surface, (0, 0))
 
     def run(self) -> None:
         while self.running:

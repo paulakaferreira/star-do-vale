@@ -12,7 +12,7 @@ from src import settings
 
 from .objects.collectables import Collectable
 from .objects.tiles import Tile
-from .settings import SCREEN_HEIGHT, SCREEN_WIDTH, TILE_SIZE
+from .settings import GRID_COLS, GRID_ROWS, SCREEN_HEIGHT, SCREEN_WIDTH, TILE_SIZE
 from .support import import_folder
 
 if TYPE_CHECKING:
@@ -20,9 +20,10 @@ if TYPE_CHECKING:
 
 MAX_INVENTORY_CAPACITY = 32
 
-DEFAULT_PLAYER_X = (SCREEN_WIDTH // 2 // TILE_SIZE) * TILE_SIZE + TILE_SIZE / 2
-DEFAULT_PLAYER_Y = (SCREEN_HEIGHT // 2 // TILE_SIZE) * TILE_SIZE + TILE_SIZE / 2
-DEFAULT_PLAYER_POS = (DEFAULT_PLAYER_X, DEFAULT_PLAYER_Y)
+DEFAULT_PLAYER_POS = (
+    (GRID_COLS // 2) * TILE_SIZE,
+    (GRID_ROWS // 2) * TILE_SIZE,
+)
 
 
 class Player(pygame.sprite.Sprite):
