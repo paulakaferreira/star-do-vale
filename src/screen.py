@@ -1,12 +1,12 @@
 import pygame
 from pygame.locals import RESIZABLE
 
-from .settings import ANTI_ALIASING, SCREEN_HEIGHT, SCREEN_WIDTH
+from .settings import ANTI_ALIASING, GAME_HEIGHT, GAME_WIDTH
 
-pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), RESIZABLE)
+pygame.display.set_mode((GAME_WIDTH, GAME_HEIGHT), RESIZABLE)
 
 real_screen = pygame.display.get_surface()
-virtual_screen = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+virtual_screen = pygame.Surface((GAME_WIDTH, GAME_HEIGHT))
 
 
 def get_transformation(

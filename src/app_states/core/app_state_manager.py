@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 
 from pygame_gui import UIManager
 
-from src.settings import SCREEN_HEIGHT, SCREEN_WIDTH
+from src.settings import GAME_HEIGHT, GAME_WIDTH
 
 if TYPE_CHECKING:
     from ...main import Game
@@ -23,7 +23,7 @@ class AppStateManager:
         self.active_state: BaseAppState | None = None
         self.game = game
 
-        self.ui_manager = UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.ui_manager = UIManager((GAME_WIDTH, GAME_HEIGHT))
         MainMenuState(self.ui_manager, self)
         GameState(self.ui_manager, self)
         ExitState(self.ui_manager, self)
