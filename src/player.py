@@ -12,7 +12,7 @@ from src import settings
 
 from .objects.collectables import Collectable
 from .objects.tiles import Tile
-from .settings import GRID_HEIGHT, GRID_WIDTH, TILE_SIZE
+from .settings import GRID_HEIGHT, GRID_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH, TILE_SIZE
 from .support import import_folder
 
 if TYPE_CHECKING:

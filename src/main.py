@@ -29,37 +29,16 @@ class Game:
         x_trans, y_trans = get_transformation(virtual_screen, real_screen)
         update_display(x_trans, y_trans)
 
-        if True:
+        def calculate_scaled_mouse_position(position: tuple[int, int]) -> tuple[int, int]:
+            if y_trans[0] and x_trans[0]:
+                unscaled_position = (
+                    (position[0] - x_trans[1]) / x_trans[0],
+                    (position[1] - y_trans[1]) / y_trans[0],
+                )
+                return unscaled_position  # type: ignore
+            return (0, 0)
 
-            def calculate_scaled_mouse_position(position: tuple[int, int]) -> tuple[int, int]:
-                if y_trans[0] and x_trans[0]:
-                    unscaled_position = (
-                        (position[0] - x_trans[1]) / x_trans[0],
-                        (position[1] - y_trans[1]) / y_trans[0],
-                    )
-                    return unscaled_position  # type: ignore
-                return (0, 0)
-
-            self.app_state_manager.ui_manager.calculate_scaled_mouse_position = calculate_scaled_mouse_position
-
-    def run_debug(self) -> None:
-        surface = virtual_screen
-        font = pygame.font.SysFont(None, 18)
-        black = (0, 0, 0)
-        current_state_name = self.app_state_manager.active_state.name if self.app_state_manager.active_state else "?"
-        previous_state_name = (
-            self.app_state_manager.previous_state.name if self.app_state_manager.previous_state else "?"
-        )
-        state_display = font.render(
-            f"Game State: {current_state_name}\n" f"Previous State: {previous_state_name}",
-            True,
-            black,
-        )
-        surface.blit(state_display, (10, 10))
-
-        fps = int(self.clock.get_fps())
-        fps_text = font.render(f"FPS: {fps}", True, black)
-        surface.blit(fps_text, (450, 10))
+        self.app_state_manager.ui_manager.calculate_scaled_mouse_position = calculate_scaled_mouse_position
 
     def run_debug(self) -> None:
         font = pygame.font.SysFont("Comic Sans", 18)
@@ -75,6 +54,10 @@ class Game:
         )
 
         virtual_screen.blit(state_display, (10, 10))
+
+        fps = int(self.clock.get_fps())
+        fps_text = font.render(f"FPS: {fps}", True, black)
+        virtual_screen.blit(fps_text, (450, 10))
 
         if self.app_state_manager.active_state_name == "game":
             virtual_screen.blit(grid_surface, (0, 0))
