@@ -44,8 +44,8 @@ class Game:
         )
         state_display = font.render(
             f"Game State: {current_state_name}\n" f"Previous State: {previous_state_name}",
-            True,
-            black,
+            antialias=True,
+            color=black,
         )
         surface.blit(state_display, (10, 10))
 
